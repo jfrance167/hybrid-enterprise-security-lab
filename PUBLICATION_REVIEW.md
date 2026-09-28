@@ -41,6 +41,15 @@ uses PSScriptAnalyzer for PowerShell, PHP syntax linting, and CodeQL for the
 GitHub Actions workflow. Review PHP with a language-specific SAST tool before
 extending the firewall script beyond this small, isolated setup helper.
 
-No prior Git history exists for this project directory before repository
-initialization. After publication, CI and the GitHub code-scanning alert queue
-must be checked on the default branch.
+No prior Git history existed for this project directory before repository
+initialization.
+
+## Publication verification
+
+The initial public `main` commit was `792b83b`. Its `Lab source security`
+workflow completed successfully, including PowerShell analysis, PHP lint,
+history secret scanning, CodeQL for Actions, and `CI Gate`. The open code-scanning
+and secret-scanning alert queues were empty when checked after that run.
+`main` now has an active ruleset requiring pull requests and a passing `CI Gate`.
+GitHub confirmed the public tree contains the four selected screenshots and
+does not contain the raw firewall screenshot or private VM artifacts.
