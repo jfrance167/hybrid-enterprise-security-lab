@@ -1,0 +1,89 @@
+name: Lab source security
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '15 2 * * 0'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  powershell:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Parse PowerShell and run PSScriptAnalyzer
+        shell: pwsh
+        run: |
+          $errors = $null
+          $tokens = $null
+          [System.Management.Automation.Language.Parser]::ParseFile(
+            (Resolve-Path 'scripts/New-LabVMs.ps1').Path,
+            [ref]$tokens, [ref]$errors) | Out-Null
+          if ($errors.Count) { $errors | Format-Table; exit 1 }
+          Install-Module PSScriptAnalyzer -RequiredVersion 1.25.0 -Scope CurrentUser -Force
+          $issues = Invoke-ScriptAnalyzer -Path 'scripts/New-LabVMs.ps1' -Severity Error
+          if ($issues) { $issues | Format-Table; exit 1 }
+
+  php:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Lint firewall script
+        run: php -l scripts/Configure-Firewall.php
+
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Scan Git history for secrets
+        uses: docker://ghcr.io/gitleaks/gitleaks@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f # v8.30.1
+        with:
+          args: detect --source . --redact --verbose --exit-code 2
+
+  codeql-actions:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: github/codeql-action/init@1c5b675653bb5c22dbe9b12b556ec555138e09fd # v4
+        with:
+          languages: actions
+      - uses: github/codeql-action/analyze@1c5b675653bb5c22dbe9b12b556ec555138e09fd # v4
+        with:
+          category: /language:actions
+
+  ci-gate:
+    name: CI Gate
+    if: always()
+    needs: [powershell, php, secret-scan, codeql-actions]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require every review job
+        env:
+          POWERSHELL_RESULT: ${{ needs.powershell.result }}
+          PHP_RESULT: ${{ needs.php.result }}
+          SECRET_SCAN_RESULT: ${{ needs.secret-scan.result }}
+          CODEQL_RESULT: ${{ needs.codeql-actions.result }}
+        run: |
+          test "$POWERSHELL_RESULT" = success
+          test "$PHP_RESULT" = success
+          test "$SECRET_SCAN_RESULT" = success
+          test "$CODEQL_RESULT" = success
