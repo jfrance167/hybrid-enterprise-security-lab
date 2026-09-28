@@ -31,9 +31,13 @@ are outside this repository and are not published.
 ## Remaining lab work
 
 The live firewall's temporary broad rules remain in place for installation;
-narrowing and denied-traffic verification are pending. Wazuh manager, indexer,
-and dashboard services are active, but agent enrollment and event ingestion
-are pending. Those are stated limitations, not evidence of completed controls.
+narrowing and denied-traffic verification are pending. The intended allows,
+rollback steps, and evidence requirements are in `FIREWALL_POLICY.md`. Wazuh
+manager, indexer, and dashboard services are active. The lab operator reports
+event ingestion, but the observed source list, listener ports, and timestamped
+test event are not yet recorded here. The service-status screenshot does not
+prove ingestion. The selected ISO/IEC 27001:2022 mapping records open gaps and
+does not claim certification.
 
 The proposed `.gitignore` is the suggested publication policy for this lab.
 PowerShell and PHP are not CodeQL-supported source languages; the workflow

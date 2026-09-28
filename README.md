@@ -10,7 +10,9 @@ credentials, or physical-LAN access are involved. See
 **Educational lab only.** This configuration is not production ready. It uses
 evaluation operating systems, temporary broad outbound firewall rules, an
 internal HTTP service, and self-signed management certificates. Use only
-fictional data on the isolated VirtualBox networks. See [SECURITY.md](SECURITY.md).
+fictional data on the isolated VirtualBox networks. See [SECURITY.md](SECURITY.md),
+the [firewall rule and test plan](FIREWALL_POLICY.md), and the
+[ISO/IEC 27001:2022 lab control mapping](ISO27001_CONTROL_MAPPING.md).
 
 ## First-build topology
 
@@ -78,7 +80,9 @@ DNS; OPNsense supplies user-network DHCP. The workstation uses domain DNS.
 - From the domain user's workstation, the internal service desk returned
   HTTP `200 OK` at `10.77.20.20`.
 - Ubuntu `SIEM01` has Wazuh 4.14 installed; manager, indexer, and dashboard
-  services report active. Agent enrollment and event ingestion are pending.
+  services report active. The lab operator reports verifying event ingestion.
+  The observed source list, listener ports, and timestamped test event have
+  not yet been recorded in this repository.
 
 Do not start an incident exercise until ordinary domain logon, application
 access, denied cross-segment traffic, and event ingestion are demonstrated.
@@ -90,7 +94,7 @@ access, denied cross-segment traffic, and event ingestion are demonstrated.
   (verified). Restricting reachability to approved ports is pending.
 - A denied cross-segment connection appears in firewall logs (pending).
 - A Windows logon, Linux SSH event, and firewall deny arrive at `LAB-SIEM01`
-  (pending).
+  (source-by-source evidence pending; ingestion reported by the lab operator).
 - Four reviewed setup screenshots are selected in [`evidence/`](evidence/README.md)
   as candidate portfolio evidence. Network-rule and event evidence will be
   added after those controls are validated. Other console screenshots are

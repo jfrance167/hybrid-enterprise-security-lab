@@ -9,8 +9,12 @@ network.
 The firewall setup script adds broad outbound rules only with an explicit
 installation flag. The running lab currently has those temporary rules. Narrow
 them, verify denied cross-segment traffic, and capture sanitized evidence before
-claiming the network-control deliverable is complete. The internal service uses
-HTTP and management certificates are self-signed. Do not reuse these settings
+claiming the network-control deliverable is complete. The intended rules and
+acceptance tests are in [FIREWALL_POLICY.md](FIREWALL_POLICY.md). The selected
+ISO/IEC 27001:2022 controls, evidence, and open gaps are recorded in
+[ISO27001_CONTROL_MAPPING.md](ISO27001_CONTROL_MAPPING.md); this lab is not
+certified. The internal service uses HTTP and management certificates are
+self-signed. Do not reuse these settings
 for real data or an Internet-facing system.
 
 Use only synthetic identities and safe events. Review every screenshot and
