@@ -1,10 +1,12 @@
 <?php
 // Run only at the isolated LAB-FW console after reviewing the rule matrix.
 // A dated, private configuration backup is created before any change.
-if ($argc !== 2 || $argv[1] !== '--apply') {
-    fwrite(STDERR, "Usage: php Apply-FirewallAllowlist.php --apply\n");
+if ($argc < 2 || $argc > 3 || $argv[1] !== '--apply'
+    || ($argc === 3 && $argv[2] !== '--maintenance-egress')) {
+    fwrite(STDERR, "Usage: php Apply-FirewallAllowlist.php --apply [--maintenance-egress]\n");
     exit(2);
 }
+$maintenanceEgress = $argc === 3;
 
 $path = '/conf/config.xml';
 $doc = new DOMDocument();
@@ -45,32 +47,35 @@ $template = $broad['Default allow LAN to any rule'];
 // Every tuple is interface, source, destination, protocol, port, description.
 // Empty port means all ports, which is not permitted in this allowlist.
 $matrix = [
-    ['lan', '10.77.10.0/24', '10.77.20.10', 'tcp', '53', 'LAB-ALLOW WS AD DNS TCP'],
-    ['lan', '10.77.10.0/24', '10.77.20.10', 'udp', '53', 'LAB-ALLOW WS AD DNS UDP'],
-    ['lan', '10.77.10.0/24', '10.77.20.10', 'tcp', '88', 'LAB-ALLOW WS Kerberos TCP'],
-    ['lan', '10.77.10.0/24', '10.77.20.10', 'udp', '88', 'LAB-ALLOW WS Kerberos UDP'],
-    ['lan', '10.77.10.0/24', '10.77.20.10', 'tcp', '389', 'LAB-ALLOW WS LDAP TCP'],
-    ['lan', '10.77.10.0/24', '10.77.20.10', 'udp', '389', 'LAB-ALLOW WS LDAP UDP'],
-    ['lan', '10.77.10.0/24', '10.77.20.10', 'tcp', '464', 'LAB-ALLOW WS password change TCP'],
-    ['lan', '10.77.10.0/24', '10.77.20.10', 'udp', '464', 'LAB-ALLOW WS password change UDP'],
-    ['lan', '10.77.10.0/24', '10.77.20.10', 'udp', '123', 'LAB-ALLOW WS time'],
-    ['lan', '10.77.10.0/24', '10.77.20.10', 'tcp', '135', 'LAB-ALLOW WS AD RPC mapper'],
-    ['lan', '10.77.10.0/24', '10.77.20.10', 'tcp', '445', 'LAB-ALLOW WS policy SMB'],
-    ['lan', '10.77.10.0/24', '10.77.20.10', 'tcp', '3268', 'LAB-ALLOW WS global catalog'],
-    ['lan', '10.77.10.0/24', '10.77.20.10', 'tcp', '49152:65535', 'LAB-ALLOW WS AD dynamic RPC'],
-    ['lan', '10.77.10.0/24', '10.77.20.20', 'tcp', '80', 'LAB-ALLOW WS service desk HTTP'],
-    ['lan', '10.77.10.0/24', '10.77.30.10', 'tcp', '1514', 'LAB-ALLOW WS Wazuh telemetry'],
+    ['lan', '10.77.10.139', '10.77.20.10', 'tcp', '53', 'LAB-ALLOW WS AD DNS TCP'],
+    ['lan', '10.77.10.139', '10.77.20.10', 'udp', '53', 'LAB-ALLOW WS AD DNS UDP'],
+    ['lan', '10.77.10.139', '10.77.20.10', 'tcp', '88', 'LAB-ALLOW WS Kerberos TCP'],
+    ['lan', '10.77.10.139', '10.77.20.10', 'udp', '88', 'LAB-ALLOW WS Kerberos UDP'],
+    ['lan', '10.77.10.139', '10.77.20.10', 'tcp', '389', 'LAB-ALLOW WS LDAP TCP'],
+    ['lan', '10.77.10.139', '10.77.20.10', 'udp', '389', 'LAB-ALLOW WS LDAP UDP'],
+    ['lan', '10.77.10.139', '10.77.20.10', 'tcp', '464', 'LAB-ALLOW WS password change TCP'],
+    ['lan', '10.77.10.139', '10.77.20.10', 'udp', '464', 'LAB-ALLOW WS password change UDP'],
+    ['lan', '10.77.10.139', '10.77.20.10', 'udp', '123', 'LAB-ALLOW WS time'],
+    ['lan', '10.77.10.139', '10.77.20.10', 'tcp', '135', 'LAB-ALLOW WS AD RPC mapper'],
+    ['lan', '10.77.10.139', '10.77.20.10', 'tcp', '445', 'LAB-ALLOW WS policy SMB'],
+    ['lan', '10.77.10.139', '10.77.20.10', 'tcp', '3268', 'LAB-ALLOW WS global catalog'],
+    ['lan', '10.77.10.139', '10.77.20.10', 'tcp', '49152:65535', 'LAB-ALLOW WS AD dynamic RPC'],
+    ['lan', '10.77.10.139', '10.77.20.20', 'tcp', '443', 'LAB-ALLOW WS service desk HTTPS'],
+    ['lan', '10.77.10.139', '10.77.30.10', 'tcp', '1514', 'LAB-ALLOW WS Wazuh telemetry'],
     ['opt1', '10.77.20.10', '10.77.30.10', 'tcp', '1514', 'LAB-ALLOW DC Wazuh telemetry'],
     ['opt1', '10.77.20.20', '10.77.30.10', 'tcp', '1514', 'LAB-ALLOW APP Wazuh telemetry'],
     ['opt1', '10.77.20.20', '10.77.20.1', 'udp', '53', 'LAB-ALLOW APP DNS UDP'],
     ['opt1', '10.77.20.20', '10.77.20.1', 'tcp', '53', 'LAB-ALLOW APP DNS TCP'],
     ['opt1', '10.77.20.10', '10.77.20.1', 'udp', '53', 'LAB-ALLOW DC forwarder DNS UDP'],
     ['opt1', '10.77.20.10', '10.77.20.1', 'tcp', '53', 'LAB-ALLOW DC forwarder DNS TCP'],
-    ['opt1', '10.77.20.0/24', '!10.77.0.0/16', 'tcp', '443', 'LAB-ALLOW server public updates'],
     ['opt2', '10.77.30.10', '10.77.30.1', 'udp', '53', 'LAB-ALLOW SIEM DNS UDP'],
     ['opt2', '10.77.30.10', '10.77.30.1', 'tcp', '53', 'LAB-ALLOW SIEM DNS TCP'],
-    ['opt2', '10.77.30.10', '!10.77.0.0/16', 'tcp', '443', 'LAB-ALLOW SIEM public updates'],
 ];
+if ($maintenanceEgress) {
+    $matrix[] = ['opt1', '10.77.20.10', '!10.77.0.0/16', 'tcp', '443', 'LAB-ALLOW DC public updates'];
+    $matrix[] = ['opt1', '10.77.20.20', '!10.77.0.0/16', 'tcp', '443', 'LAB-ALLOW APP public updates'];
+    $matrix[] = ['opt2', '10.77.30.10', '!10.77.0.0/16', 'tcp', '443', 'LAB-ALLOW SIEM public updates'];
+}
 
 function setField(DOMDocument $doc, DOMXPath $xpath, DOMElement $rule, string $name, string $value): void
 {
@@ -82,9 +87,16 @@ function setField(DOMDocument $doc, DOMXPath $xpath, DOMElement $rule, string $n
     $field->nodeValue = $value;
 }
 
-// Re-running replaces only this script's rules, never unrelated policy.
+// These descriptions are reserved for this script, including its older rules.
+$managedDescriptions = array_merge(array_column($matrix, 5), [
+    'LAB-ALLOW WS service desk HTTP',
+    'LAB-ALLOW server public updates',
+    'LAB-ALLOW DC public updates',
+    'LAB-ALLOW APP public updates',
+    'LAB-ALLOW SIEM public updates',
+]);
 foreach (iterator_to_array($xpath->query('rule', $rules)) as $rule) {
-    if (str_starts_with($xpath->evaluate('string(description)', $rule), 'LAB-ALLOW ')) {
+    if (in_array($xpath->evaluate('string(description)', $rule), $managedDescriptions, true)) {
         $rules->removeChild($rule);
     }
 }

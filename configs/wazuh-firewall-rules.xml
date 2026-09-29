@@ -8,4 +8,12 @@
     <description>Lab firewall denied users-to-SIEM traffic</description>
     <group>firewall_block,</group>
   </rule>
+  <rule id="100101" level="6">
+    <if_sid>87700</if_sid>
+    <action>block</action>
+    <srcip>10.77.20.20</srcip>
+    <dstip>10.77.30.10</dstip>
+    <description>Lab firewall denied application-to-SIEM traffic</description>
+    <group>firewall_block,</group>
+  </rule>
 </group>

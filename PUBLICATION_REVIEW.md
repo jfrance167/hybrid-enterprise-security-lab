@@ -1,19 +1,19 @@
 # Public GitHub security review
 
 Reviewed 2026-09-29 UTC for the fictional, isolated five-VM lab. The review
-covers tracked source and configuration examples, Git history, the six selected
+covers tracked source and configuration examples, Git history, the four selected
 screenshots, and observed live tests. Guest disks, credentials, full firewall
 configuration, and raw logs remain outside Git.
 
 | File / location | Issue and exact value of concern | Severity | Recommended fix / result |
 | --- | --- | --- | --- |
 | `scripts/Configure-Firewall.php` | The installation helper's `--enable-temporary-egress` mode can create broad server and management passes. | Medium | The live broad passes were disabled by the scoped allowlist. The helper now refuses to run when `LAB-ALLOW ` rules already exist. Keep the mode limited to a fresh, isolated build. |
-| `configs/wazuh-firewall-syslog.xml`, `scripts/Configure-FirewallSyslog.php` | Firewall events use `protocol` `udp` and `transport` `udp4` on port `514`; this does not encrypt or authenticate logs. | Medium | Bound Wazuh to `10.77.30.10`, allowed only `10.77.30.1`, and filtered OPNsense to `filterlog`. Documented the residual lab risk in `SECURITY.md` and `FIREWALL_POLICY.md`. Replace with authenticated TLS before real data or production use. |
-| `README.md`, `FIREWALL_POLICY.md` | The fictional service desk uses TCP `80` and management certificates are self-signed. | Medium | Kept the service on isolated internal networks and disclosed the limit. Add HTTPS and trusted certificates before any real-data reuse. |
-| `FIREWALL_POLICY.md` F01 / F05 | Source `10.77.10.0/24`, dynamic RPC `49152–65535` to the DC, and server/SIEM public TCP `443` are broader than a final enterprise policy. | Medium | Restricted destinations and ports, tested sign-in and policy update, and documented DHCP reservation, RPC refinement, and patch-window review as open scope decisions. |
+| Removed `configs/wazuh-firewall-syslog.xml` and `scripts/Configure-FirewallSyslog.php` | The previous firewall feed used `protocol` `udp`, `transport` `udp4`, port `514`, without authentication or encryption. | Medium | Installed the official OPNsense `os-wazuh-agent` plugin with `filterlog` only. Agent `004` produced a fresh rule `100101` alert after removing the UDP sender and listener. `scripts/Disable-FirewallSyslog.php` records the retirement. |
+| `configs/nginx-app-https.conf` and former service on TCP `80` | The fictional service desk previously served cleartext HTTP. | Medium | Bound Nginx to `10.77.20.20:443` only, installed a private-keyed lab certificate, trusted its CA on `WS01`, and verified HTTPS 200 without bypassing validation; TCP 80 was closed. Keys remain outside Git. Management certificates remain self-signed. |
+| `scripts/Apply-FirewallAllowlist.php` F01 / F05 | The former workstation source was `10.77.10.0/24`; public update TCP `443` was always allowed. AD dynamic RPC `49152:65535` remains broad. | Medium | Reserved `10.77.10.139` to the private workstation MAC and scoped all user rules to that address. This is not device authentication. Public update egress now requires `--maintenance-egress`, is scoped to the three named servers, and is disabled in the normal policy. Dynamic RPC remains limited to the workstation address and DC; fixed-port configuration and regression testing remain open. |
 | `ISO27001_CONTROL_MAPPING.md` 8.8, 8.15 | Ubuntu reports pending security updates; Windows configuration assessment alerts include scores below 30/100. The SIEM previously had VirtualBox disk write errors. | Medium | Recorded these as open hardening and operational risks. Fresh events and active services were verified after the host restart, with zero matching guest kernel I/O errors in the current boot. Patch and observe storage over time; do not claim production assurance. |
-| `SECURITY.md`, `README.md` (previous text) | Earlier text said broad passes and Windows ingestion were still pending after both had been verified. | Low | Updated status to match the live allowlist, three active agents, Windows logon alerts, Linux alerts, and firewall rule `100100`. |
-| `evidence/` | Raw console images can disclose identities, management details, or secrets. | Low | Only six reviewed PNGs are allowlisted. Each was visually checked for credentials and real identifiers; PNG text, EXIF, and compressed text chunks were absent. All other console captures are ignored. |
+| `SECURITY.md`, `README.md`, `FIREWALL_POLICY.md` (previous text) | Earlier text described HTTP, UDP Syslog, three agents, and the broad DHCP source after the live configuration changed. | Low | Updated the status to match HTTPS, agent-based firewall logging, four agents, and host-scoped rules. |
+| `evidence/` | Raw console images can disclose identities, management details, or secrets. | Low | Removed three outdated or redundant images; only four reviewed PNGs are allowlisted. The new agent-cutover image shows only fictional lab identities and IPs. All other console captures are ignored. |
 | `.gitignore` | VM media, private keys, environment files, raw logs, captures, databases, and archives must not enter a public repository. | Low | Explicit ignore rules cover those formats; the staged file list and history secret scan are publication gates. |
 
 No literal password, API key, token, SSH private key, certificate private key,
@@ -32,11 +32,13 @@ configuration examples contain no working credentials or default passwords.
 - [x] Prevent the temporary-egress helper from re-enabling broad passes after
   the allowlist is installed.
 - [x] Verify Wazuh ingestion from `APP01`, `DC01`, `WS01`, and `LAB-FW` with
-  fresh safe events, including a firewall deny rule match.
+  fresh safe events, including rule `100101` under firewall agent `004` after
+  retiring UDP 514.
 - [x] Keep credentials, guest disks, installation media, full configs, raw
   logs, captures, and unreviewed screenshots out of Git.
-- [x] Mark HTTP, UDP Syslog, self-signed certificates, patching, benchmark
-  scores, and storage observation as open lab risks.
+- [x] Replace internal HTTP and UDP Syslog; mark remaining self-signed
+  management certificates, patching, benchmark scores, AD dynamic RPC, and
+  storage observation as open lab risks.
 - [x] Pin Actions to immutable commits, use minimum permissions, and require
   the protected-branch `CI Gate` before merging.
 
