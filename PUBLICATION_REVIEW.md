@@ -33,9 +33,11 @@ are outside this repository and are not published.
 The live firewall's temporary broad rules remain in place for installation;
 narrowing and denied-traffic verification are pending. The intended allows,
 rollback steps, and evidence requirements are in `FIREWALL_POLICY.md`. Wazuh
-manager, indexer, and dashboard services are active. The lab operator reports
-event ingestion, but the observed source list, listener ports, and timestamped
-test event are not yet recorded here. The service-status screenshot does not
+local and `APP01` Linux sudo alerts were observed at the manager; the Windows
+Server agent is registered as `ID 002`, but its event arrival remains
+unverified. VirtualBox reported failed writes to the SIEM virtual disk. An
+offline ext4 check found no structural errors, but stable boot and service
+recovery are open. The service-status screenshot does not
 prove ingestion. The selected ISO/IEC 27001:2022 mapping records open gaps and
 does not claim certification.
 

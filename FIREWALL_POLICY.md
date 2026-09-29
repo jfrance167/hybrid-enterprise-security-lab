@@ -80,10 +80,15 @@ must cover traffic within that segment.
 As of 2026-09-28, live OPNsense inspection confirmed three broad IPv4 pass
 rules: `Default allow LAN to any rule`, `Lab server subnet outbound`, and
 `Lab management subnet outbound`. The default IPv6 LAN pass rule also remains.
-The user reported verification of Wazuh event ingestion, but the live Wazuh
-agent list contains only the local manager (`ID 000`) and no enrolled Windows
-or Linux endpoints. Which event was observed still needs to be recorded. Do
-not use the selected Wazuh service-status screenshot as evidence of ingestion.
+The live Wazuh manager recorded local sudo alerts and `APP01` agent alerts.
+`APP01` appeared as active agent `ID 001`; rule IDs `5402` and `5403` were
+observed after a safe test. The Windows Server agent was installed and started;
+the offline manager registry lists `DC01` as `ID 002`, but its event arrival
+remains unverified. The workstation and firewall are not yet onboarded.
+VirtualBox then reported two failed writes to the SIEM virtual disk. An offline
+ext4 check found no structural errors, but stable boot and disk writes must
+still be verified. Do not use the selected Wazuh service-status screenshot as
+evidence of ingestion or claim continuous monitoring until recovery is tested.
 
 ## Vendor references
 

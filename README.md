@@ -39,7 +39,7 @@ for installation and should be narrowed after service dependencies are measured.
 | LAB-DC01 | Windows Server 2025 evaluation | 4 GB | 2 | 50 GB | servers |
 | LAB-WS01 | Windows 11 Enterprise evaluation | 4 GB | 2 | 64 GB | users |
 | LAB-APP01 | Ubuntu Server 24.04 LTS | 2 GB | 2 | 24 GB | servers |
-| LAB-SIEM01 | Ubuntu Server 24.04 LTS + Wazuh | 8 GB | 4 | 60 GB | management |
+| LAB-SIEM01 | Ubuntu Server 24.04 LTS + Wazuh | 8 GB | 2 | 60 GB | management |
 
 The five VMs reserve **22 GB of guest RAM total** when all run, below the
 32 GB cap. Dynamic disk sizes are maximum capacities, not immediate usage.
@@ -69,7 +69,8 @@ DNS; OPNsense supplies user-network DHCP. The workstation uses domain DNS.
 
 ## Build status (2026-09-28)
 
-- Five VMs installed and running at **22 GB** assigned guest RAM.
+- Five VMs installed with **22 GB** assigned guest RAM in total. VMs may be
+  paused or powered off during maintenance.
 - OPNsense installed with users, servers, and management segments. Packet
   filtering is enabled; outbound server and management rules are logged.
 - Windows Server 2025 provides `corp.example.test` AD DS and DNS. Lab OUs and
@@ -79,10 +80,18 @@ DNS; OPNsense supplies user-network DHCP. The workstation uses domain DNS.
 - Ubuntu `APP01` runs Nginx and serves the fictional internal service desk.
 - From the domain user's workstation, the internal service desk returned
   HTTP `200 OK` at `10.77.20.20`.
-- Ubuntu `SIEM01` has Wazuh 4.14 installed; manager, indexer, and dashboard
-  services report active. The lab operator reports verifying event ingestion.
-  The observed source list, listener ports, and timestamped test event have
-  not yet been recorded in this repository.
+- Ubuntu `SIEM01` has Wazuh 4.14.8 installed. Local manager alerts and
+  `APP01` Linux agent alerts were observed in the manager's alert file.
+  `APP01` appeared as active agent `ID 001`; safe sudo events generated rule
+  IDs `5402` and `5403`. The Windows Server agent was installed from a
+  checksum-verified, signed package and started. The offline manager agent
+  registry lists `DC01` as `ID 002`, but its alert arrival still needs
+  verification. The workstation and firewall are not yet onboarded.
+- `SIEM01` was shut down after VirtualBox reported two failed virtual-disk
+  writes. An offline read-only ext4 check completed without structural errors.
+  The installed guest then had CPU soft lockups on reboot while VirtualBox was
+  using the Windows Hyper-V compatibility path. Stable boot and Wazuh recovery
+  must be checked before further event-ingestion claims or an incident exercise.
 
 Do not start an incident exercise until ordinary domain logon, application
 access, denied cross-segment traffic, and event ingestion are demonstrated.
@@ -93,8 +102,9 @@ access, denied cross-segment traffic, and event ingestion are demonstrated.
 - `LAB-WS01` resolves the domain and reaches the internal application
   (verified). Restricting reachability to approved ports is pending.
 - A denied cross-segment connection appears in firewall logs (pending).
-- A Windows logon, Linux SSH event, and firewall deny arrive at `LAB-SIEM01`
-  (source-by-source evidence pending; ingestion reported by the lab operator).
+- A Linux `APP01` sudo event arrived at `LAB-SIEM01` (verified). A Windows
+  logon, Linux SSH event, and firewall deny remain to be verified after the
+  SIEM storage issue is resolved.
 - Four reviewed setup screenshots are selected in [`evidence/`](evidence/README.md)
   as candidate portfolio evidence. Network-rule and event evidence will be
   added after those controls are validated. Other console screenshots are
