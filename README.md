@@ -7,9 +7,12 @@ rebuilding their detectors or Grafana pipeline. No real users, production
 credentials, or physical-LAN access are involved. See
 [PROJECT_SCOPE.md](PROJECT_SCOPE.md).
 
+The [authorized deny triage exercise](INCIDENT_EXERCISE.md) connects identity,
+application access, firewall policy, Wazuh ingestion, and analyst disposition.
+
 **Educational lab only.** This configuration is not production ready. It uses
-evaluation operating systems, temporary broad outbound firewall rules, an
-internal HTTP service, and self-signed management certificates. Use only
+evaluation operating systems, an internal HTTP service, unencrypted syslog
+on an isolated management network, and self-signed management certificates. Use only
 fictional data on the isolated VirtualBox networks. See [SECURITY.md](SECURITY.md),
 the [firewall rule and test plan](FIREWALL_POLICY.md), and the
 [ISO/IEC 27001:2022 lab control mapping](ISO27001_CONTROL_MAPPING.md).
@@ -29,9 +32,9 @@ the [firewall rule and test plan](FIREWALL_POLICY.md), and the
 
 Only `LAB-FW` has a NAT adapter. All other adapters use VirtualBox internal
 networks. There are no bridged adapters, port forwards, or host-only interfaces.
-Administration starts through VM consoles. The firewall has explicit outbound
-rules for the server and management subnets. These currently allow broad egress
-for installation and should be narrowed after service dependencies are measured.
+Administration starts through VM consoles. The internal firewall interfaces
+use the named allowlist in [`FIREWALL_POLICY.md`](FIREWALL_POLICY.md); the four
+temporary broad passes were disabled after installation.
 
 | VM | OS | RAM | CPUs | Dynamic disk | NICs |
 | --- | --- | ---: | ---: | ---: | --- |
@@ -67,12 +70,18 @@ DNS; OPNsense supplies user-network DHCP. The workstation uses domain DNS.
 6. Install `LAB-APP01` and one harmless internal web service.
 7. Install `LAB-SIEM01` and onboard Windows, Linux, and firewall logs.
 
-## Build status (2026-09-28)
+## Build status (2026-09-29)
 
 - Five VMs installed with **22 GB** assigned guest RAM in total. VMs may be
   paused or powered off during maintenance.
-- OPNsense installed with users, servers, and management segments. Packet
-  filtering is enabled; outbound server and management rules are logged.
+- OPNsense installed with users, servers, and management segments. The four
+  temporary broad passes are disabled; 25 named IPv4 allows are defined for
+  AD, the internal app, Wazuh telemetry, DNS, and server/SIEM updates.
+  Post-change tests returned HTTP 200 from the app, an AD DNS SRV answer,
+  TCP 1514 success to Wazuh, and TCP 443 failure to its dashboard. OPNsense
+  logged the denied `WS01` to `SIEM01:443` packet. `WS01` to `APP01:22`
+  also failed and appeared as a firewall deny. Domain `gpupdate /force`
+  succeeded, and the DC DNS forwarder resolved an external name.
 - Windows Server 2025 provides `corp.example.test` AD DS and DNS. Lab OUs and
   the synthetic `analyst1` / `SOC-Analysts` account exist.
 - Windows 11 Enterprise joined the domain as `WS01`; domain DNS SRV lookup was
@@ -80,34 +89,39 @@ DNS; OPNsense supplies user-network DHCP. The workstation uses domain DNS.
 - Ubuntu `APP01` runs Nginx and serves the fictional internal service desk.
 - From the domain user's workstation, the internal service desk returned
   HTTP `200 OK` at `10.77.20.20`.
-- Ubuntu `SIEM01` has Wazuh 4.14.8 installed. Local manager alerts and
-  `APP01` Linux agent alerts were observed in the manager's alert file.
-  `APP01` appeared as active agent `ID 001`; safe sudo events generated rule
-  IDs `5402` and `5403`. The Windows Server agent was installed from a
-  checksum-verified, signed package and started. The offline manager agent
-  registry lists `DC01` as `ID 002`, but its alert arrival still needs
-  verification. The workstation and firewall are not yet onboarded.
-- `SIEM01` was shut down after VirtualBox reported two failed virtual-disk
-  writes. An offline read-only ext4 check completed without structural errors.
-  The installed guest then had CPU soft lockups on reboot while VirtualBox was
-  using the Windows Hyper-V compatibility path. Stable boot and Wazuh recovery
-  must be checked before further event-ingestion claims or an incident exercise.
+- Ubuntu `SIEM01` has Wazuh 4.14.8 installed. `APP01` (`ID 001`), `DC01`
+  (`ID 002`), and `WS01` (`ID 003`) were active at the manager. The manager
+  recorded an `APP01` sudo alert (`5402`), `DC01` Windows logon alerts
+  (`60106`/`60118`), `WS01` Windows configuration assessment alerts, and an
+  OPNsense users-to-SIEM deny alert (`100100`). A harmless failed local SSH
+  login on `APP01` produced Wazuh rule `5710`, and a `WS01` domain logon
+  produced rule `60106`. The Windows agent installers
+  matched publisher SHA-512 files and had valid Wazuh signatures.
+- VirtualBox previously reported two failed writes to the SIEM virtual disk.
+  An offline read-only ext4 check found no structural errors. After the user
+  authorized disabling the host Hyper-V compatibility path and restarting,
+  VirtualBox used VT-x directly and Wazuh booted with active services and
+  fresh events. Manager, indexer, and dashboard were active at the latest
+  check, with no guest kernel I/O error matches in the current boot. This is
+  a recovery observation, not long-term disk assurance.
 
-Do not start an incident exercise until ordinary domain logon, application
-access, denied cross-segment traffic, and event ingestion are demonstrated.
+Those domain, application, firewall-deny, and event-ingestion prerequisites
+were verified before the authorized exercise in `INCIDENT_EXERCISE.md`.
 
 ## Acceptance evidence
 
 - A domain user signs into `LAB-WS01` (verified).
 - `LAB-WS01` resolves the domain and reaches the internal application
-  (verified). Restricting reachability to approved ports is pending.
-- A denied cross-segment connection appears in firewall logs (pending).
-- A Linux `APP01` sudo event arrived at `LAB-SIEM01` (verified). A Windows
-  logon, Linux SSH event, and firewall deny remain to be verified after the
-  SIEM storage issue is resolved.
-- Four reviewed setup screenshots are selected in [`evidence/`](evidence/README.md)
-  as candidate portfolio evidence. Network-rule and event evidence will be
-  added after those controls are validated. Other console screenshots are
+  (verified). Unapproved `APP01:22` and `SIEM01:443` connections were denied
+  and logged by OPNsense (verified).
+- A denied workstation-to-SIEM dashboard connection appeared in the OPNsense
+  filter log and as Wazuh rule `100100` (verified).
+- A Linux `APP01` sudo event, a `DC01` Windows logon, `WS01` Windows
+  assessment/logon events, a Linux SSH event, and the firewall deny arrived
+  at `LAB-SIEM01` (verified). Longer storage observation remains open.
+- Six reviewed screenshots are selected in [`evidence/`](evidence/README.md)
+  as candidate portfolio evidence, including the validated firewall rule and
+  event-ingestion views. Other console screenshots are
   excluded from Git; no passwords, keys, or full private logs belong in Git.
   Credentials are stored outside this project under a private VM directory.
 

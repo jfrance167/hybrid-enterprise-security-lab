@@ -1,8 +1,7 @@
 # Lab firewall policy and verification
 
-This is the approved-flow design for the fictional, isolated VirtualBox lab.
-Rule status must be checked against the running OPNsense configuration before
-claiming enforcement. The source interface is where OPNsense evaluates a new
+This is the implemented allowlist and test record for the fictional, isolated
+VirtualBox lab. The source interface is where OPNsense evaluates a new
 connection; replies use the resulting state. The default policy for traffic
 between segments is deny, with denied attempts logged.
 
@@ -18,21 +17,21 @@ The lab operator owns and reviews these rules after each service change.
 The only WAN connection is OPNsense's VirtualBox NAT adapter. No VM has a
 bridged interface or a port forward.
 
-## Proposed allowlist
+## Allowlist and remaining scope decisions
 
-These are candidate requirements, not proof that every port is in use. Confirm
-each flow in the firewall log and remove unused ports after a successful
-domain logon, application request, and event-ingestion test. The `WS01` address
-should be reserved in DHCP before rules target the host; until then a rule
-using the users subnet must be called out as broader scope.
+The named rules are active on OPNsense. The matrix includes some AD ports
+that have not each been exercised; remove any unused ports after a full
+domain logon and policy test. Domain logon and `gpupdate /force` succeeded.
+`WS01` uses DHCP (`10.77.10.139` during the
+test), so the users-subnet source is broader than one reserved host.
 
 | ID | Source | Destination | Protocol / destination port | Business reason | Verification |
 | --- | --- | --- | --- | --- | --- |
 | F01 | `WS01` | `DC01` | TCP/UDP 53, 88, 389, 464; TCP 135, 445, 3268, 49152–65535; UDP 123 | AD DNS, authentication, policy, and time. Dynamic RPC is limited to the DC destination. | Domain sign-in, DNS SRV query, `gpupdate`, firewall hit counts |
-| F02 | `WS01` | `APP01` | TCP 80 | Fictional service desk until HTTPS is configured | HTTP 200 and an unrelated port denied |
-| F03 | Enrolled `WS01`, `DC01`, `APP01` only | `SIEM01` | TCP 1514; TCP 1515 only during enrollment | Wazuh agent traffic | Agent status and a timestamped test event at the manager |
-| F04 | `LAB-FW` only | `SIEM01` | Syslog listener port and protocol **only after confirmed** | Firewall deny events | Deny log observed at the manager with matching time and rule |
-| F05 | Each VM requiring updates | Public update endpoints via NAT | TCP 443; DNS and time only to named resolvers | OS and package maintenance | Record endpoint, time, and rule hits; disable outside patch window if practical |
+| F02 | `WS01` | `APP01` | TCP 80 | Fictional service desk until HTTPS is configured | HTTP 200; TCP 22 denied and logged |
+| F03 | Enrolled `WS01`, `DC01`, `APP01` only | `SIEM01` | TCP 1514; TCP 1515 closed after enrollment | Wazuh agent traffic | All three agents active; manager alerts from each source |
+| F04 | `LAB-FW` only | `SIEM01` | UDP 514 on the isolated management network | Firewall deny events | Filterlog-only forwarding generated Wazuh rule `100100` for denied `10.77.10.139` to `10.77.30.10:443` at 02:43 UTC |
+| F05 | Servers and SIEM | Public endpoints outside `10.77.0.0/16` via NAT | TCP 443; DNS to the segment gateway | OS and package maintenance; review or disable outside patch windows | DC DNS forwarder and external lookup verified; package updates and workstation access still need review |
 
 No general users-to-management access is approved. Wazuh dashboard/API,
 OPNsense management, SSH, RDP, and SMB administration require an explicit
@@ -40,16 +39,16 @@ source host, named operator, and separate change record. Wazuh's default
 agent ports are documented by its publisher; its Syslog listener is disabled
 by default, so F04 cannot be enabled solely from this table.
 
-Live `SIEM01` inspection found TCP 1514 and 1515 listening for Wazuh agents,
-and TCP 443 (dashboard) and 55000 (API) bound to all guest interfaces. No
-Syslog port 514 listener was found. The current users-to-any pass rule can
-therefore reach management services across segments; replacing that rule is
-urgent. Do not allow 443 or 55000 from the user subnet merely because the
-service is listening.
+Live `SIEM01` inspection found TCP 1514/1515 for Wazuh agents and TCP 443
+(dashboard) and 55000 (API) bound to all guest interfaces. The firewall now
+denies users-to-management access except TCP 1514, despite the dashboard/API
+listeners. UDP 514 is bound only to `10.77.30.10` and accepts only
+`10.77.30.1` in Wazuh's remote syslog configuration.
 
-`APP01` currently uses `10.77.20.1` for DNS and its default gateway, so its
-DNS rule can target only that firewall address. The other guests' resolver
-settings must be inspected before their update/DNS rules are finalized.
+`APP01` uses `10.77.20.1` for DNS and its default gateway. The allowlist also
+permits `DC01` to query that gateway as a DNS forwarder. `DC01` uses
+`10.77.20.1` as its forwarder, and an external-name A lookup through the DC
+DNS service succeeded after the rule update.
 
 Microsoft lists additional AD ports for some functions, including dynamic
 RPC. F01 deliberately scopes that range to `DC01`, but should be narrowed
@@ -61,15 +60,16 @@ must cover traffic within that segment.
 
 1. Export a dated OPNsense configuration backup and record the current rule
    order, DHCP reservation, and firewall log settings. Keep the backup private.
-2. Put the specific allows above any broader rules. Remove the temporary
-   server and management egress rules and replace the default users-to-any
-   pass rule. Preserve console access for rollback.
+2. Put the specific allows above any broader rules. The reviewed script
+   creates a private backup and disables the four temporary broad passes.
+   Preserve console access for rollback.
 3. Verify F01–F03 after the change. Exercise a denied users-to-management
    dashboard/API connection and a denied unrelated users-to-servers port.
    Record the source, destination, port, timestamp, and matching deny rule.
-4. Check the Wazuh source list, test events, and whether F04 uses an encrypted
-   transport. If plain Syslog is used, document the isolated-network risk and
-   plan an authenticated/encrypted forwarder before any production reuse.
+4. Check the Wazuh source list and test events. F04 currently uses plain UDP
+   Syslog; the isolated VirtualBox management network, destination binding,
+   and `allowed-ips` setting limit exposure but do not authenticate or encrypt
+   the packet. Add authenticated TLS forwarding before any production reuse.
 5. Sanitize screenshots and exports before committing. Keep full firewall
    configs, raw logs, credentials, and host identifiers outside Git.
 6. Recheck rule hit counts and the deny log after a reboot. Record the owner,
@@ -77,18 +77,24 @@ must cover traffic within that segment.
 
 ## Current status
 
-As of 2026-09-28, live OPNsense inspection confirmed three broad IPv4 pass
-rules: `Default allow LAN to any rule`, `Lab server subnet outbound`, and
-`Lab management subnet outbound`. The default IPv6 LAN pass rule also remains.
-The live Wazuh manager recorded local sudo alerts and `APP01` agent alerts.
-`APP01` appeared as active agent `ID 001`; rule IDs `5402` and `5403` were
-observed after a safe test. The Windows Server agent was installed and started;
-the offline manager registry lists `DC01` as `ID 002`, but its event arrival
-remains unverified. The workstation and firewall are not yet onboarded.
-VirtualBox then reported two failed writes to the SIEM virtual disk. An offline
-ext4 check found no structural errors, but stable boot and disk writes must
-still be verified. Do not use the selected Wazuh service-status screenshot as
-evidence of ingestion or claim continuous monitoring until recovery is tested.
+On 2026-09-29, `configctl filter reload` returned `OK` after the backed-up
+change. `pfctl -sr` showed named source/destination/port rules and zero
+`pass in ... to any` rules on internal `em1`, `em2`, and `em3`. The workstation
+received HTTP 200 from `APP01`, resolved the AD SRV record through `DC01`,
+and connected to Wazuh on TCP 1514. Domain sign-in and `gpupdate /force`
+succeeded for the workstation. TCP 443 to the Wazuh dashboard returned
+`False`; OPNsense recorded `block,in` and the manager generated rule `100100`
+with parsed source `10.77.10.139`, destination `10.77.30.10`, and destination
+port `443`. TCP 22 from `WS01` to `APP01` also failed; OPNsense recorded a
+`block,in` packet for `10.77.10.139` to `10.77.20.20:22` at 02:55 UTC.
+`APP01`, `DC01`, and `WS01` were active Wazuh agents with alerts, including
+an `APP01` SSH event (`5710`).
+
+The rule matrix is implemented, but DHCP reservation, every AD port test,
+Windows workstation update access, and authenticated Syslog transport remain
+open refinements. The SIEM previously had VirtualBox write errors; recovery
+and fresh event arrival were observed after direct VT-x boot, while longer
+disk-health monitoring remains open.
 
 ## Vendor references
 

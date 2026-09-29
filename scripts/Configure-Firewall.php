@@ -21,6 +21,13 @@ if (!$rules) {
     fwrite(STDERR, "Firewall rules model missing\n");
     exit(1);
 }
+// Never restore temporary broad egress after the scoped allowlist is installed.
+foreach ($xpath->query('rule', $rules) as $rule) {
+    if (str_starts_with($xpath->evaluate('string(description)', $rule), 'LAB-ALLOW ')) {
+        fwrite(STDERR, "Scoped LAB-ALLOW rules already exist; temporary egress is refused.\n");
+        exit(2);
+    }
+}
 $template = null;
 foreach ($xpath->query('rule', $rules) as $rule) {
     if ($xpath->evaluate('string(interface)', $rule) === 'lan'
