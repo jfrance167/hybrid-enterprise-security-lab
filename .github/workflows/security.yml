@@ -38,8 +38,10 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Lint firewall script
-        run: php -l scripts/Configure-Firewall.php
+      - name: Lint firewall scripts
+        run: find scripts -maxdepth 1 -name '*.php' -print0 | xargs -0 -n1 php -l
+      - name: Parse example Wazuh XML
+        run: python3 -c 'import pathlib, xml.etree.ElementTree as ET; [ET.parse(p) for p in pathlib.Path("configs").glob("*.xml")]'
 
   secret-scan:
     runs-on: ubuntu-latest
