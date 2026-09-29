@@ -11,8 +11,9 @@ The [authorized deny triage exercise](INCIDENT_EXERCISE.md) connects identity,
 application access, firewall policy, Wazuh ingestion, and analyst disposition.
 
 **Educational lab only.** This configuration is not production ready. It uses
-evaluation operating systems, an internal HTTP service, unencrypted syslog
-on an isolated management network, and self-signed management certificates. Use only
+evaluation operating systems and self-signed management certificates. The
+internal application uses HTTPS with a private lab CA trusted on `WS01`;
+OPNsense filterlog uses the enrolled Wazuh agent. Use only
 fictional data on the isolated VirtualBox networks. See [SECURITY.md](SECURITY.md),
 the [firewall rule and test plan](FIREWALL_POLICY.md), and the
 [ISO/IEC 27001:2022 lab control mapping](ISO27001_CONTROL_MAPPING.md).
@@ -53,7 +54,7 @@ space afterward as operating systems and updates grow.
 
 | Network | Gateway | Static guests |
 | --- | --- | --- |
-| users `10.77.10.0/24` | `10.77.10.1` | `LAB-WS01`: DHCP `.100`–`.150` |
+| users `10.77.10.0/24` | `10.77.10.1` | `LAB-WS01`: reserved DHCP `.139` |
 | servers `10.77.20.0/24` | `10.77.20.1` | `LAB-DC01`: `.10`, `LAB-APP01`: `.20` |
 | management `10.77.30.0/24` | `10.77.30.1` | `LAB-SIEM01`: `.10` |
 
@@ -75,9 +76,12 @@ DNS; OPNsense supplies user-network DHCP. The workstation uses domain DNS.
 - Five VMs installed with **22 GB** assigned guest RAM in total. VMs may be
   paused or powered off during maintenance.
 - OPNsense installed with users, servers, and management segments. The four
-  temporary broad passes are disabled; 25 named IPv4 allows are defined for
-  AD, the internal app, Wazuh telemetry, DNS, and server/SIEM updates.
-  Post-change tests returned HTTP 200 from the app, an AD DNS SRV answer,
+  temporary broad passes are disabled; 23 named IPv4 allows are defined for
+  AD, the internal app, Wazuh telemetry, and DNS. Public TCP 443 update
+  egress requires the explicit `--maintenance-egress` option and is currently
+  disabled. The workstation address is reserved to its private VM MAC and is
+  the source of the user-network allows. Post-change tests returned HTTPS 200
+  from the app with certificate validation, an AD DNS SRV answer,
   TCP 1514 success to Wazuh, and TCP 443 failure to its dashboard. OPNsense
   logged the denied `WS01` to `SIEM01:443` packet. `WS01` to `APP01:22`
   also failed and appeared as a firewall deny. Domain `gpupdate /force`
@@ -86,14 +90,18 @@ DNS; OPNsense supplies user-network DHCP. The workstation uses domain DNS.
   the synthetic `analyst1` / `SOC-Analysts` account exist.
 - Windows 11 Enterprise joined the domain as `WS01`; domain DNS SRV lookup was
   verified before the join. The synthetic `CORP\analyst1` account signed in.
-- Ubuntu `APP01` runs Nginx and serves the fictional internal service desk.
+- Ubuntu `APP01` runs Nginx on `10.77.20.20:443` only and serves the fictional
+  internal service desk. Its key and lab CA key remain outside Git.
 - From the domain user's workstation, the internal service desk returned
-  HTTP `200 OK` at `10.77.20.20`.
+  HTTPS `200 OK` at `10.77.20.20`; TCP 80 was closed.
 - Ubuntu `SIEM01` has Wazuh 4.14.8 installed. `APP01` (`ID 001`), `DC01`
-  (`ID 002`), and `WS01` (`ID 003`) were active at the manager. The manager
+  (`ID 002`), `WS01` (`ID 003`), and the OPNsense `LAB-FW` agent (`ID 004`)
+  were active at the manager. The manager
   recorded an `APP01` sudo alert (`5402`), `DC01` Windows logon alerts
   (`60106`/`60118`), `WS01` Windows configuration assessment alerts, and an
-  OPNsense users-to-SIEM deny alert (`100100`). A harmless failed local SSH
+  OPNsense users-to-SIEM deny alert (`100100`). After replacing isolated UDP
+  syslog with the authenticated Wazuh agent, a new application-to-SIEM deny
+  produced rule `100101` under agent `004`; UDP 514 was removed. A harmless failed local SSH
   login on `APP01` produced Wazuh rule `5710`, and a `WS01` domain logon
   produced rule `60106`. The Windows agent installers
   matched publisher SHA-512 files and had valid Wazuh signatures.
@@ -111,15 +119,16 @@ were verified before the authorized exercise in `INCIDENT_EXERCISE.md`.
 ## Acceptance evidence
 
 - A domain user signs into `LAB-WS01` (verified).
-- `LAB-WS01` resolves the domain and reaches the internal application
+- `LAB-WS01` resolves the domain and reaches the internal HTTPS application
   (verified). Unapproved `APP01:22` and `SIEM01:443` connections were denied
   and logged by OPNsense (verified).
 - A denied workstation-to-SIEM dashboard connection appeared in the OPNsense
-  filter log and as Wazuh rule `100100` (verified).
+  filter log and as Wazuh rule `100100` (verified on the earlier isolated UDP
+  feed); a fresh application-to-SIEM deny produced `100101` on the agent feed.
 - A Linux `APP01` sudo event, a `DC01` Windows logon, `WS01` Windows
   assessment/logon events, a Linux SSH event, and the firewall deny arrived
   at `LAB-SIEM01` (verified). Longer storage observation remains open.
-- Six reviewed screenshots are selected in [`evidence/`](evidence/README.md)
+- Four reviewed screenshots are selected in [`evidence/`](evidence/README.md)
   as candidate portfolio evidence, including the validated firewall rule and
   event-ingestion views. Other console screenshots are
   excluded from Git; no passwords, keys, or full private logs belong in Git.

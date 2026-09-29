@@ -2,10 +2,8 @@ evidence/*
 !evidence/README.md
 !evidence/dc-ou.png
 !evidence/ws-dns2.png
-!evidence/ws-check.png
 !evidence/siem-status3.png
-!evidence/siem-ingestion.png
-!evidence/firewall-enforcement.png
+!evidence/siem-agent-cutover.png
 .env
 .env.*
 !.env.example
