@@ -1,0 +1,260 @@
+﻿{
+    "Subjects":  [
+                     {
+                         "Passed":  true,
+                         "CompletedUtc":  "2026-10-13T02:37:26.3951500Z",
+                         "Identity":  "CORP\\iam.sec1",
+                         "RunId":  "96cb9aaf65ac4de698f7cf5af0e09ca8",
+                         "AdministrativeToken":  false,
+                         "Role":  "SecurityReader",
+                         "Operations":  [
+                                            {
+                                                "Actual":  "ALLOW",
+                                                "Passed":  true,
+                                                "ErrorCode":  null,
+                                                "Resource":  "Review",
+                                                "Expected":  "ALLOW",
+                                                "Operation":  "Read"
+                                            },
+                                            {
+                                                "Actual":  "DENY",
+                                                "Passed":  true,
+                                                "ErrorCode":  -2147024891,
+                                                "Resource":  "Review",
+                                                "Expected":  "DENY",
+                                                "Operation":  "Write"
+                                            },
+                                            {
+                                                "Actual":  "DENY",
+                                                "Passed":  true,
+                                                "ErrorCode":  -2147024891,
+                                                "Resource":  "Ops",
+                                                "Expected":  "DENY",
+                                                "Operation":  "Read"
+                                            },
+                                            {
+                                                "Actual":  "DENY",
+                                                "Passed":  true,
+                                                "ErrorCode":  -2147024891,
+                                                "Resource":  "Ops",
+                                                "Expected":  "DENY",
+                                                "Operation":  "Write"
+                                            }
+                                        ]
+                     },
+                     {
+                         "Passed":  true,
+                         "CompletedUtc":  "2026-10-13T02:37:28.7955331Z",
+                         "Identity":  "CORP\\iam.sec2",
+                         "RunId":  "96cb9aaf65ac4de698f7cf5af0e09ca8",
+                         "AdministrativeToken":  false,
+                         "Role":  "SecurityReader",
+                         "Operations":  [
+                                            {
+                                                "Actual":  "ALLOW",
+                                                "Passed":  true,
+                                                "ErrorCode":  null,
+                                                "Resource":  "Review",
+                                                "Expected":  "ALLOW",
+                                                "Operation":  "Read"
+                                            },
+                                            {
+                                                "Actual":  "DENY",
+                                                "Passed":  true,
+                                                "ErrorCode":  -2147024891,
+                                                "Resource":  "Review",
+                                                "Expected":  "DENY",
+                                                "Operation":  "Write"
+                                            },
+                                            {
+                                                "Actual":  "DENY",
+                                                "Passed":  true,
+                                                "ErrorCode":  -2147024891,
+                                                "Resource":  "Ops",
+                                                "Expected":  "DENY",
+                                                "Operation":  "Read"
+                                            },
+                                            {
+                                                "Actual":  "DENY",
+                                                "Passed":  true,
+                                                "ErrorCode":  -2147024891,
+                                                "Resource":  "Ops",
+                                                "Expected":  "DENY",
+                                                "Operation":  "Write"
+                                            }
+                                        ]
+                     },
+                     {
+                         "Passed":  true,
+                         "CompletedUtc":  "2026-10-13T02:37:31.0744906Z",
+                         "Identity":  "CORP\\iam.ops1",
+                         "RunId":  "96cb9aaf65ac4de698f7cf5af0e09ca8",
+                         "AdministrativeToken":  false,
+                         "Role":  "SystemsOperator",
+                         "Operations":  [
+                                            {
+                                                "Actual":  "DENY",
+                                                "Passed":  true,
+                                                "ErrorCode":  -2147024891,
+                                                "Resource":  "Review",
+                                                "Expected":  "DENY",
+                                                "Operation":  "Read"
+                                            },
+                                            {
+                                                "Actual":  "DENY",
+                                                "Passed":  true,
+                                                "ErrorCode":  -2147024891,
+                                                "Resource":  "Review",
+                                                "Expected":  "DENY",
+                                                "Operation":  "Write"
+                                            },
+                                            {
+                                                "Actual":  "ALLOW",
+                                                "Passed":  true,
+                                                "ErrorCode":  null,
+                                                "Resource":  "Ops",
+                                                "Expected":  "ALLOW",
+                                                "Operation":  "Read"
+                                            },
+                                            {
+                                                "Actual":  "ALLOW",
+                                                "Passed":  true,
+                                                "ErrorCode":  null,
+                                                "Resource":  "Ops",
+                                                "Expected":  "ALLOW",
+                                                "Operation":  "Write"
+                                            }
+                                        ]
+                     },
+                     {
+                         "Passed":  true,
+                         "CompletedUtc":  "2026-10-13T02:37:33.2304238Z",
+                         "Identity":  "CORP\\iam.ops2",
+                         "RunId":  "96cb9aaf65ac4de698f7cf5af0e09ca8",
+                         "AdministrativeToken":  false,
+                         "Role":  "SystemsOperator",
+                         "Operations":  [
+                                            {
+                                                "Actual":  "DENY",
+                                                "Passed":  true,
+                                                "ErrorCode":  -2147024891,
+                                                "Resource":  "Review",
+                                                "Expected":  "DENY",
+                                                "Operation":  "Read"
+                                            },
+                                            {
+                                                "Actual":  "DENY",
+                                                "Passed":  true,
+                                                "ErrorCode":  -2147024891,
+                                                "Resource":  "Review",
+                                                "Expected":  "DENY",
+                                                "Operation":  "Write"
+                                            },
+                                            {
+                                                "Actual":  "ALLOW",
+                                                "Passed":  true,
+                                                "ErrorCode":  null,
+                                                "Resource":  "Ops",
+                                                "Expected":  "ALLOW",
+                                                "Operation":  "Read"
+                                            },
+                                            {
+                                                "Actual":  "ALLOW",
+                                                "Passed":  true,
+                                                "ErrorCode":  null,
+                                                "Resource":  "Ops",
+                                                "Expected":  "ALLOW",
+                                                "Operation":  "Write"
+                                            }
+                                        ]
+                     },
+                     {
+                         "Passed":  true,
+                         "CompletedUtc":  "2026-10-13T02:37:35.2988332Z",
+                         "Identity":  "CORP\\iam.mover",
+                         "RunId":  "96cb9aaf65ac4de698f7cf5af0e09ca8",
+                         "AdministrativeToken":  false,
+                         "Role":  "SecurityReader",
+                         "Operations":  [
+                                            {
+                                                "Actual":  "ALLOW",
+                                                "Passed":  true,
+                                                "ErrorCode":  null,
+                                                "Resource":  "Review",
+                                                "Expected":  "ALLOW",
+                                                "Operation":  "Read"
+                                            },
+                                            {
+                                                "Actual":  "DENY",
+                                                "Passed":  true,
+                                                "ErrorCode":  -2147024891,
+                                                "Resource":  "Review",
+                                                "Expected":  "DENY",
+                                                "Operation":  "Write"
+                                            },
+                                            {
+                                                "Actual":  "DENY",
+                                                "Passed":  true,
+                                                "ErrorCode":  -2147024891,
+                                                "Resource":  "Ops",
+                                                "Expected":  "DENY",
+                                                "Operation":  "Read"
+                                            },
+                                            {
+                                                "Actual":  "DENY",
+                                                "Passed":  true,
+                                                "ErrorCode":  -2147024891,
+                                                "Resource":  "Ops",
+                                                "Expected":  "DENY",
+                                                "Operation":  "Write"
+                                            }
+                                        ]
+                     },
+                     {
+                         "Passed":  true,
+                         "CompletedUtc":  "2026-10-13T02:37:37.4359019Z",
+                         "Identity":  "CORP\\iam.leaver",
+                         "RunId":  "96cb9aaf65ac4de698f7cf5af0e09ca8",
+                         "AdministrativeToken":  false,
+                         "Role":  "SystemsOperator",
+                         "Operations":  [
+                                            {
+                                                "Actual":  "DENY",
+                                                "Passed":  true,
+                                                "ErrorCode":  -2147024891,
+                                                "Resource":  "Review",
+                                                "Expected":  "DENY",
+                                                "Operation":  "Read"
+                                            },
+                                            {
+                                                "Actual":  "DENY",
+                                                "Passed":  true,
+                                                "ErrorCode":  -2147024891,
+                                                "Resource":  "Review",
+                                                "Expected":  "DENY",
+                                                "Operation":  "Write"
+                                            },
+                                            {
+                                                "Actual":  "ALLOW",
+                                                "Passed":  true,
+                                                "ErrorCode":  null,
+                                                "Resource":  "Ops",
+                                                "Expected":  "ALLOW",
+                                                "Operation":  "Read"
+                                            },
+                                            {
+                                                "Actual":  "ALLOW",
+                                                "Passed":  true,
+                                                "ErrorCode":  null,
+                                                "Resource":  "Ops",
+                                                "Expected":  "ALLOW",
+                                                "Operation":  "Write"
+                                            }
+                                        ]
+                     }
+                 ],
+    "CompletedUtc":  "2026-10-13T02:37:37.8874673Z",
+    "RunId":  "96cb9aaf65ac4de698f7cf5af0e09ca8",
+    "Stage":  "joiner",
+    "Passed":  true
+}

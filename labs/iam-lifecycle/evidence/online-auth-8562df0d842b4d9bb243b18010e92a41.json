@@ -1,0 +1,50 @@
+﻿{
+    "Passed":  false,
+    "Scope":  "Online authentication only; cached interactive/offline logon and global ticket revocation not asserted",
+    "CompletedUtc":  "2026-10-13T03:00:07.8499187Z",
+    "Server":  "DC01.corp.example.test:389",
+    "RunId":  "96cb9aaf65ac4de698f7cf5af0e09ca8",
+    "Subjects":  [
+                     {
+                         "Identity":  "CORP\\iam.sec1",
+                         "Expected":  "ALLOW",
+                         "Actual":  "ERROR",
+                         "LdapErrorCode":  null,
+                         "DirectoryStatus":  null,
+                         "StartedUtc":  "2026-10-13T03:00:07.5915851Z",
+                         "CompletedUtc":  "2026-10-13T03:00:07.7564367Z",
+                         "Passed":  false
+                     },
+                     {
+                         "Identity":  "CORP\\iam.ops2",
+                         "Expected":  "AUTH_REJECTED",
+                         "Actual":  "AUTH_REJECTED",
+                         "LdapErrorCode":  49,
+                         "DirectoryStatus":  null,
+                         "StartedUtc":  "2026-10-13T03:00:07.7695549Z",
+                         "CompletedUtc":  "2026-10-13T03:00:07.7923306Z",
+                         "Passed":  false
+                     },
+                     {
+                         "Identity":  "CORP\\iam.leaver",
+                         "Expected":  "AUTH_REJECTED",
+                         "Actual":  "AUTH_REJECTED",
+                         "LdapErrorCode":  49,
+                         "DirectoryStatus":  null,
+                         "StartedUtc":  "2026-10-13T03:00:07.7960104Z",
+                         "CompletedUtc":  "2026-10-13T03:00:07.8092432Z",
+                         "Passed":  false
+                     },
+                     {
+                         "Identity":  "CORP\\iam.sec1",
+                         "Expected":  "ALLOW",
+                         "Actual":  "ERROR",
+                         "LdapErrorCode":  null,
+                         "DirectoryStatus":  null,
+                         "StartedUtc":  "2026-10-13T03:00:07.8092432Z",
+                         "CompletedUtc":  "2026-10-13T03:00:07.8499187Z",
+                         "Passed":  false
+                     }
+                 ],
+    "Protocol":  "LDAPv3 SASL Negotiate with signing and sealing; new connection and explicit fixture credentials per attempt"
+}
