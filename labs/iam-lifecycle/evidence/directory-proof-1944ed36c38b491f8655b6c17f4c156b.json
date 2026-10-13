@@ -1,0 +1,57 @@
+﻿{
+    "RecursiveAdminMatches":  [
+
+                              ],
+    "Passed":  true,
+    "OU":  "OU=IAM-Lifecycle-Lab,OU=Lab,DC=corp,DC=example,DC=test",
+    "CompletedUtc":  "2026-10-13T03:05:14.6010265Z",
+    "RunId":  "96cb9aaf65ac4de698f7cf5af0e09ca8",
+    "PrivilegedGroupSids":  [
+                                "S-1-5-21-1913346699-1088253351-1525948375-512",
+                                "S-1-5-21-1913346699-1088253351-1525948375-518",
+                                "S-1-5-21-1913346699-1088253351-1525948375-519",
+                                "S-1-5-32-544",
+                                "S-1-5-32-548",
+                                "S-1-5-32-549",
+                                "S-1-5-32-550",
+                                "S-1-5-32-551"
+                            ],
+    "Users":  [
+                  {
+                      "User":  "iam.sec1",
+                      "Enabled":  true,
+                      "Roles":  "IAM-SecurityReader",
+                      "Admin":  false
+                  },
+                  {
+                      "User":  "iam.sec2",
+                      "Enabled":  true,
+                      "Roles":  "IAM-SecurityReader",
+                      "Admin":  false
+                  },
+                  {
+                      "User":  "iam.ops1",
+                      "Enabled":  true,
+                      "Roles":  "IAM-SystemsOperator",
+                      "Admin":  false
+                  },
+                  {
+                      "User":  "iam.ops2",
+                      "Enabled":  false,
+                      "Roles":  "",
+                      "Admin":  false
+                  },
+                  {
+                      "User":  "iam.mover",
+                      "Enabled":  true,
+                      "Roles":  "IAM-SystemsOperator",
+                      "Admin":  false
+                  },
+                  {
+                      "User":  "iam.leaver",
+                      "Enabled":  false,
+                      "Roles":  "",
+                      "Admin":  false
+                  }
+              ]
+}

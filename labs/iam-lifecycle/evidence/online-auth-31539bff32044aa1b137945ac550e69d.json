@@ -1,0 +1,66 @@
+﻿{
+    "Passed":  true,
+    "Scope":  "Online authentication only; cached interactive/offline logon and global ticket revocation not asserted",
+    "CompletedUtc":  "2026-10-13T03:14:17.3931722Z",
+    "Server":  "DC01.corp.example.test:389",
+    "RunId":  "96cb9aaf65ac4de698f7cf5af0e09ca8",
+    "Subjects":  [
+                     {
+                         "Identity":  "CORP\\iam.sec1",
+                         "Expected":  "ALLOW",
+                         "Actual":  "ALLOW",
+                         "NetworkLogonAllowed":  true,
+                         "NetworkLogonErrorCode":  null,
+                         "LdapErrorCode":  null,
+                         "DirectoryStatus":  null,
+                         "FailureType":  null,
+                         "AttemptStep":  "RootDseSearch",
+                         "StartedUtc":  "2026-10-13T03:14:17.1904696Z",
+                         "CompletedUtc":  "2026-10-13T03:14:17.2681987Z",
+                         "Passed":  true
+                     },
+                     {
+                         "Identity":  "CORP\\iam.ops2",
+                         "Expected":  "AUTH_REJECTED",
+                         "Actual":  "AUTH_REJECTED",
+                         "NetworkLogonAllowed":  false,
+                         "NetworkLogonErrorCode":  1331,
+                         "LdapErrorCode":  49,
+                         "DirectoryStatus":  null,
+                         "FailureType":  "System.DirectoryServices.Protocols.LdapException",
+                         "AttemptStep":  "LdapBind",
+                         "StartedUtc":  "2026-10-13T03:14:17.2681987Z",
+                         "CompletedUtc":  "2026-10-13T03:14:17.2965791Z",
+                         "Passed":  true
+                     },
+                     {
+                         "Identity":  "CORP\\iam.leaver",
+                         "Expected":  "AUTH_REJECTED",
+                         "Actual":  "AUTH_REJECTED",
+                         "NetworkLogonAllowed":  false,
+                         "NetworkLogonErrorCode":  1331,
+                         "LdapErrorCode":  49,
+                         "DirectoryStatus":  null,
+                         "FailureType":  "System.DirectoryServices.Protocols.LdapException",
+                         "AttemptStep":  "LdapBind",
+                         "StartedUtc":  "2026-10-13T03:14:17.2965791Z",
+                         "CompletedUtc":  "2026-10-13T03:14:17.3198042Z",
+                         "Passed":  true
+                     },
+                     {
+                         "Identity":  "CORP\\iam.sec1",
+                         "Expected":  "ALLOW",
+                         "Actual":  "ALLOW",
+                         "NetworkLogonAllowed":  true,
+                         "NetworkLogonErrorCode":  null,
+                         "LdapErrorCode":  null,
+                         "DirectoryStatus":  null,
+                         "FailureType":  null,
+                         "AttemptStep":  "RootDseSearch",
+                         "StartedUtc":  "2026-10-13T03:14:17.3216848Z",
+                         "CompletedUtc":  "2026-10-13T03:14:17.3931722Z",
+                         "Passed":  true
+                     }
+                 ],
+    "Protocol":  "LDAPv3 SASL Negotiate with signing and sealing; new connection and explicit fixture credentials per attempt"
+}

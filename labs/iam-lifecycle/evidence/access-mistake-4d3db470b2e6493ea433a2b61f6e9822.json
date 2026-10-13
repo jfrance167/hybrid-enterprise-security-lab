@@ -1,0 +1,50 @@
+﻿{
+    "Subjects":  [
+                     {
+                         "Passed":  false,
+                         "CompletedUtc":  "2026-10-13T02:55:30.7549968Z",
+                         "Identity":  "CORP\\iam.ops1",
+                         "RunId":  "96cb9aaf65ac4de698f7cf5af0e09ca8",
+                         "AdministrativeToken":  false,
+                         "Role":  "SystemsOperator",
+                         "Operations":  [
+                                            {
+                                                "Actual":  "DENY",
+                                                "Passed":  true,
+                                                "ErrorCode":  -2147024891,
+                                                "Resource":  "Review",
+                                                "Expected":  "DENY",
+                                                "Operation":  "Read"
+                                            },
+                                            {
+                                                "Actual":  "DENY",
+                                                "Passed":  true,
+                                                "ErrorCode":  -2147024891,
+                                                "Resource":  "Review",
+                                                "Expected":  "DENY",
+                                                "Operation":  "Write"
+                                            },
+                                            {
+                                                "Actual":  "DENY",
+                                                "Passed":  false,
+                                                "ErrorCode":  -2147024891,
+                                                "Resource":  "Ops",
+                                                "Expected":  "ALLOW",
+                                                "Operation":  "Read"
+                                            },
+                                            {
+                                                "Actual":  "DENY",
+                                                "Passed":  false,
+                                                "ErrorCode":  -2147024891,
+                                                "Resource":  "Ops",
+                                                "Expected":  "ALLOW",
+                                                "Operation":  "Write"
+                                            }
+                                        ]
+                     }
+                 ],
+    "CompletedUtc":  "2026-10-13T02:55:31.1534007Z",
+    "RunId":  "96cb9aaf65ac4de698f7cf5af0e09ca8",
+    "Stage":  "mistake",
+    "Passed":  false
+}

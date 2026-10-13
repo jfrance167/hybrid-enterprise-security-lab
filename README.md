@@ -10,6 +10,12 @@ credentials, or physical-LAN access are involved. See
 The [authorized deny triage exercise](INCIDENT_EXERCISE.md) connects identity,
 application access, firewall policy, Wazuh ingestion, and analyst disposition.
 
+The [IAM lifecycle and access-review exercise](labs/iam-lifecycle/README.md)
+extends the same lab with six fictional identities and measured SMB permission
+changes. It verifies joiner/mover access, seeded-review remediation, a 43.14-second
+access recovery and a 4.75-second targeted leaver-session revocation. It includes
+failed attempts, unedited guest screenshots and a read-only evidence verifier.
+
 **Educational lab only.** This configuration is not production ready. It uses
 evaluation operating systems and self-signed management certificates. The
 internal application uses HTTPS with a private lab CA trusted on `WS01`;

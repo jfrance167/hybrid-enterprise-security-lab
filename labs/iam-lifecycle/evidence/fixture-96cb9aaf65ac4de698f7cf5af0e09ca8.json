@@ -1,0 +1,248 @@
+﻿{
+    "SchemaVersion":  1,
+    "Stage":  "Fixture prepared, user access tests pending",
+    "RunId":  "96cb9aaf65ac4de698f7cf5af0e09ca8",
+    "CompletedUtc":  "2026-10-13T00:49:39.7043425Z",
+    "Domain":  "corp.example.test",
+    "OU":  "OU=IAM-Lifecycle-Lab,OU=Lab,DC=corp,DC=example,DC=test",
+    "Users":  [
+                  {
+                      "SamAccountName":  "iam.sec1",
+                      "DistinguishedName":  "CN=iam.sec1,OU=IAM-Lifecycle-Lab,OU=Lab,DC=corp,DC=example,DC=test",
+                      "Enabled":  true,
+                      "SID":  {
+                                  "BinaryLength":  28,
+                                  "AccountDomainSid":  {
+                                                           "BinaryLength":  24,
+                                                           "AccountDomainSid":  {
+                                                                                    "BinaryLength":  24,
+                                                                                    "AccountDomainSid":  {
+                                                                                                             "BinaryLength":  24,
+                                                                                                             "AccountDomainSid":  {
+                                                                                                                                      "BinaryLength":  24,
+                                                                                                                                      "AccountDomainSid":  {
+                                                                                                                                                               "BinaryLength":  24,
+                                                                                                                                                               "AccountDomainSid":  "S-1-5-21-1913346699-1088253351-1525948375",
+                                                                                                                                                               "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                                                                                                                           },
+                                                                                                                                      "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                                                                                                  },
+                                                                                                             "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                                                                         },
+                                                                                    "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                                                },
+                                                           "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                       },
+                                  "Value":  "S-1-5-21-1913346699-1088253351-1525948375-1108"
+                              },
+                      "MemberOf":  [
+                                       "CN=IAM-SecurityReader,OU=IAM-Lifecycle-Lab,OU=Lab,DC=corp,DC=example,DC=test"
+                                   ]
+                  },
+                  {
+                      "SamAccountName":  "iam.sec2",
+                      "DistinguishedName":  "CN=iam.sec2,OU=IAM-Lifecycle-Lab,OU=Lab,DC=corp,DC=example,DC=test",
+                      "Enabled":  true,
+                      "SID":  {
+                                  "BinaryLength":  28,
+                                  "AccountDomainSid":  {
+                                                           "BinaryLength":  24,
+                                                           "AccountDomainSid":  {
+                                                                                    "BinaryLength":  24,
+                                                                                    "AccountDomainSid":  {
+                                                                                                             "BinaryLength":  24,
+                                                                                                             "AccountDomainSid":  {
+                                                                                                                                      "BinaryLength":  24,
+                                                                                                                                      "AccountDomainSid":  {
+                                                                                                                                                               "BinaryLength":  24,
+                                                                                                                                                               "AccountDomainSid":  "S-1-5-21-1913346699-1088253351-1525948375",
+                                                                                                                                                               "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                                                                                                                           },
+                                                                                                                                      "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                                                                                                  },
+                                                                                                             "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                                                                         },
+                                                                                    "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                                                },
+                                                           "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                       },
+                                  "Value":  "S-1-5-21-1913346699-1088253351-1525948375-1109"
+                              },
+                      "MemberOf":  [
+                                       "CN=IAM-SecurityReader,OU=IAM-Lifecycle-Lab,OU=Lab,DC=corp,DC=example,DC=test"
+                                   ]
+                  },
+                  {
+                      "SamAccountName":  "iam.ops1",
+                      "DistinguishedName":  "CN=iam.ops1,OU=IAM-Lifecycle-Lab,OU=Lab,DC=corp,DC=example,DC=test",
+                      "Enabled":  true,
+                      "SID":  {
+                                  "BinaryLength":  28,
+                                  "AccountDomainSid":  {
+                                                           "BinaryLength":  24,
+                                                           "AccountDomainSid":  {
+                                                                                    "BinaryLength":  24,
+                                                                                    "AccountDomainSid":  {
+                                                                                                             "BinaryLength":  24,
+                                                                                                             "AccountDomainSid":  {
+                                                                                                                                      "BinaryLength":  24,
+                                                                                                                                      "AccountDomainSid":  {
+                                                                                                                                                               "BinaryLength":  24,
+                                                                                                                                                               "AccountDomainSid":  "S-1-5-21-1913346699-1088253351-1525948375",
+                                                                                                                                                               "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                                                                                                                           },
+                                                                                                                                      "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                                                                                                  },
+                                                                                                             "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                                                                         },
+                                                                                    "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                                                },
+                                                           "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                       },
+                                  "Value":  "S-1-5-21-1913346699-1088253351-1525948375-1110"
+                              },
+                      "MemberOf":  [
+                                       "CN=IAM-SystemsOperator,OU=IAM-Lifecycle-Lab,OU=Lab,DC=corp,DC=example,DC=test"
+                                   ]
+                  },
+                  {
+                      "SamAccountName":  "iam.ops2",
+                      "DistinguishedName":  "CN=iam.ops2,OU=IAM-Lifecycle-Lab,OU=Lab,DC=corp,DC=example,DC=test",
+                      "Enabled":  true,
+                      "SID":  {
+                                  "BinaryLength":  28,
+                                  "AccountDomainSid":  {
+                                                           "BinaryLength":  24,
+                                                           "AccountDomainSid":  {
+                                                                                    "BinaryLength":  24,
+                                                                                    "AccountDomainSid":  {
+                                                                                                             "BinaryLength":  24,
+                                                                                                             "AccountDomainSid":  {
+                                                                                                                                      "BinaryLength":  24,
+                                                                                                                                      "AccountDomainSid":  {
+                                                                                                                                                               "BinaryLength":  24,
+                                                                                                                                                               "AccountDomainSid":  "S-1-5-21-1913346699-1088253351-1525948375",
+                                                                                                                                                               "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                                                                                                                           },
+                                                                                                                                      "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                                                                                                  },
+                                                                                                             "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                                                                         },
+                                                                                    "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                                                },
+                                                           "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                       },
+                                  "Value":  "S-1-5-21-1913346699-1088253351-1525948375-1111"
+                              },
+                      "MemberOf":  [
+                                       "CN=IAM-SystemsOperator,OU=IAM-Lifecycle-Lab,OU=Lab,DC=corp,DC=example,DC=test"
+                                   ]
+                  },
+                  {
+                      "SamAccountName":  "iam.mover",
+                      "DistinguishedName":  "CN=iam.mover,OU=IAM-Lifecycle-Lab,OU=Lab,DC=corp,DC=example,DC=test",
+                      "Enabled":  true,
+                      "SID":  {
+                                  "BinaryLength":  28,
+                                  "AccountDomainSid":  {
+                                                           "BinaryLength":  24,
+                                                           "AccountDomainSid":  {
+                                                                                    "BinaryLength":  24,
+                                                                                    "AccountDomainSid":  {
+                                                                                                             "BinaryLength":  24,
+                                                                                                             "AccountDomainSid":  {
+                                                                                                                                      "BinaryLength":  24,
+                                                                                                                                      "AccountDomainSid":  {
+                                                                                                                                                               "BinaryLength":  24,
+                                                                                                                                                               "AccountDomainSid":  "S-1-5-21-1913346699-1088253351-1525948375",
+                                                                                                                                                               "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                                                                                                                           },
+                                                                                                                                      "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                                                                                                  },
+                                                                                                             "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                                                                         },
+                                                                                    "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                                                },
+                                                           "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                       },
+                                  "Value":  "S-1-5-21-1913346699-1088253351-1525948375-1112"
+                              },
+                      "MemberOf":  [
+                                       "CN=IAM-SecurityReader,OU=IAM-Lifecycle-Lab,OU=Lab,DC=corp,DC=example,DC=test"
+                                   ]
+                  },
+                  {
+                      "SamAccountName":  "iam.leaver",
+                      "DistinguishedName":  "CN=iam.leaver,OU=IAM-Lifecycle-Lab,OU=Lab,DC=corp,DC=example,DC=test",
+                      "Enabled":  true,
+                      "SID":  {
+                                  "BinaryLength":  28,
+                                  "AccountDomainSid":  {
+                                                           "BinaryLength":  24,
+                                                           "AccountDomainSid":  {
+                                                                                    "BinaryLength":  24,
+                                                                                    "AccountDomainSid":  {
+                                                                                                             "BinaryLength":  24,
+                                                                                                             "AccountDomainSid":  {
+                                                                                                                                      "BinaryLength":  24,
+                                                                                                                                      "AccountDomainSid":  {
+                                                                                                                                                               "BinaryLength":  24,
+                                                                                                                                                               "AccountDomainSid":  "S-1-5-21-1913346699-1088253351-1525948375",
+                                                                                                                                                               "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                                                                                                                           },
+                                                                                                                                      "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                                                                                                  },
+                                                                                                             "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                                                                         },
+                                                                                    "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                                                },
+                                                           "Value":  "S-1-5-21-1913346699-1088253351-1525948375"
+                                                       },
+                                  "Value":  "S-1-5-21-1913346699-1088253351-1525948375-1113"
+                              },
+                      "MemberOf":  [
+                                       "CN=IAM-SystemsOperator,OU=IAM-Lifecycle-Lab,OU=Lab,DC=corp,DC=example,DC=test"
+                                   ]
+                  }
+              ],
+    "Resources":  [
+                      {
+                          "Resource":  "Review",
+                          "Path":  "C:\\Northstar-IAM\\Review",
+                          "Sddl":  "O:BAG:DUD:PAI(A;OICI;FA;;;SY)(A;OICI;FA;;;BA)(A;OICI;0x1200a9;;;S-1-5-21-1913346699-1088253351-1525948375-1106)",
+                          "Share":  "NorthstarIAMReview",
+                          "ShareAccess":  [
+                                              {
+                                                  "AccountName":  "CORP\\Domain Admins",
+                                                  "AccessControlType":  0,
+                                                  "AccessRight":  0
+                                              },
+                                              {
+                                                  "AccountName":  "CORP\\IAM-SecurityReader",
+                                                  "AccessControlType":  0,
+                                                  "AccessRight":  2
+                                              }
+                                          ]
+                      },
+                      {
+                          "Resource":  "Ops",
+                          "Path":  "C:\\Northstar-IAM\\Ops",
+                          "Sddl":  "O:BAG:DUD:PAI(A;OICI;FA;;;SY)(A;OICI;FA;;;BA)(A;OICI;0x1301bf;;;S-1-5-21-1913346699-1088253351-1525948375-1107)",
+                          "Share":  "NorthstarIAMOps",
+                          "ShareAccess":  [
+                                              {
+                                                  "AccountName":  "CORP\\Domain Admins",
+                                                  "AccessControlType":  0,
+                                                  "AccessRight":  0
+                                              },
+                                              {
+                                                  "AccountName":  "CORP\\IAM-SystemsOperator",
+                                                  "AccessControlType":  0,
+                                                  "AccessRight":  1
+                                              }
+                                          ]
+                      }
+                  ],
+    "SyntheticApproval":  "Jake performs fictional requester, resource owner and administrator roles; no real employee or employer data",
+    "AdminMembershipCheck":  "User direct/transitive administrative membership assertions remain required"
+}

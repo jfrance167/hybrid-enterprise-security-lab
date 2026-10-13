@@ -1,0 +1,29 @@
+﻿{
+    "Subjects":  [
+                     {
+                         "Passed":  true,
+                         "Metric":  "Compare with DC DisabledUtc before claiming target; session observation alone does not establish latency.",
+                         "SessionEvidence":  {
+                                                 "RunId":  "96cb9aaf65ac4de698f7cf5af0e09ca8",
+                                                 "Identity":  "CORP\\iam.leaver",
+                                                 "AdministrativeToken":  false,
+                                                 "StartedUtc":  "2026-10-13T03:13:11.1134747Z",
+                                                 "ReadyUtc":  "2026-10-13T03:13:11.3465749Z",
+                                                 "StreamFailedUtc":  "2026-10-13T03:13:22.6822148Z",
+                                                 "StreamErrorCode":  -2147024894,
+                                                 "CleanupErrorCode":  -2147024837,
+                                                 "FreshReadResult":  "DENY",
+                                                 "FreshReadUtc":  "2026-10-13T03:13:22.7070165Z",
+                                                 "FreshReadErrorCode":  -2147024891,
+                                                 "CompletedUtc":  "2026-10-13T03:13:22.7090977Z",
+                                                 "Failure":  null,
+                                                 "Scope":  "Targeted SMB resource/session only; global Kerberos revocation not asserted"
+                                             },
+                         "Identity":  "CORP\\iam.leaver"
+                     }
+                 ],
+    "CompletedUtc":  "2026-10-13T03:13:22.7659322Z",
+    "RunId":  "96cb9aaf65ac4de698f7cf5af0e09ca8",
+    "Stage":  "leaver-session",
+    "Passed":  true
+}
