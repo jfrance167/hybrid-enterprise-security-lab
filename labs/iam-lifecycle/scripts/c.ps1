@@ -1,6 +1,15 @@
 # Administrator orchestrates isolated fresh domain-user processes; secrets remain local.
 Set-StrictMode -Version Latest
 $ErrorActionPreference='Stop'
+# Scoped analyzer exception: the six random fictional fixture passwords are read
+# only after verifying Administrators/SYSTEM ACLs below. No literal secret or
+# production credential is accepted; conversion does not make plaintext storage safe.
+function Convert-PrivateLabPassword {
+ [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingConvertToSecureStringWithPlainText','',Justification='Isolated random fixture credentials from ACL-validated private guest storage; required by Start-Process -Credential; never logged or exported as evidence.')]
+ [CmdletBinding()]
+ param([string]$Password)
+ ConvertTo-SecureString $Password -AsPlainText -Force
+}
 $computer=Get-CimInstance Win32_ComputerSystem
 if($computer.Name -ne 'WS01' -or $computer.Domain -ne 'corp.example.test' -or -not $computer.PartOfDomain){throw 'Northstar WS01 domain member only'}
 $root='C:\Northstar-IAM-Client'
@@ -47,7 +56,7 @@ foreach($subject in $control.Subjects){
  $null=New-Item $attempt -ItemType Directory
  Set-OwnedAcl $attempt $sid 'Modify' $true
  $output=$attempt+'\result.json'
- $credential=New-Object Management.Automation.PSCredential(('CORP\'+$subject.Name),(ConvertTo-SecureString $entry[0].Password -AsPlainText -Force))
+ $credential=New-Object Management.Automation.PSCredential(('CORP\'+$subject.Name),(Convert-PrivateLabPassword -Password $entry[0].Password))
  $probeArguments='-NoProfile -NonInteractive -ExecutionPolicy RemoteSigned -File "'+$scripts+'\'+$probeFile+'" -Name '+$subject.Name+' -Role '+$subject.Role+' -RunId '+$m.RunId+' -ResultPath "'+$output+'"'
  $process=$null
  try{

@@ -4,6 +4,15 @@
 param([string]$EvidenceDirectory='\\VBOXSVR\IAM_Evidence')
 Set-StrictMode -Version Latest
 $ErrorActionPreference='Stop'
+# Scoped analyzer exception: passwords below are RNG-generated for six fictional
+# users and retained only in Administrators/SYSTEM-protected guest storage.
+# This explicit lab design is not a production credential-storage recommendation.
+function Convert-PrivateLabPassword {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingConvertToSecureStringWithPlainText','',Justification='RNG-generated isolated fixture password; AD requires SecureString; private guest storage is ACL-protected and excluded from evidence.')]
+    [CmdletBinding()]
+    param([string]$Password)
+    ConvertTo-SecureString -String $Password -AsPlainText -Force
+}
 $computer=Get-CimInstance Win32_ComputerSystem
 if($computer.Name -ne 'DC01' -or $computer.Domain -ne 'corp.example.test' -or $computer.DomainRole -ne 5){throw 'Restricted to Northstar DC01/PDC.'}
 Import-Module ActiveDirectory
@@ -72,7 +81,7 @@ try{
     foreach($user in $users){
         $entry=@($secrets.Users | Where-Object Name -eq $user.Name)
         if($entry.Count -ne 1){throw 'Private credential manifest mismatch.'}
-        $secure=ConvertTo-SecureString -String $entry[0].Password -AsPlainText -Force
+        $secure=Convert-PrivateLabPassword -Password $entry[0].Password
         New-ADUser -Name $user.Name -SamAccountName $user.Name -UserPrincipalName ($user.Name+'@corp.example.test') -Path $ou -Description ($manifest.OwnerMarker+' fictional '+$user.Role) -AccountPassword $secure -Enabled $true -ChangePasswordAtLogon $false -PasswordNeverExpires $false
         $manifest.Created+=@{Type='User';Identity=$user.Name};Save-Manifest
         Add-ADGroupMember -Identity $groups[$user.Role] -Members $user.Name
