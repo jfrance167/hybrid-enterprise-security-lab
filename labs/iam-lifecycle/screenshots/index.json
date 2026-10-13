@@ -1,0 +1,84 @@
+[
+  {
+    "File": "joiner-allowed-denied-20261013T023737Z.jpg",
+    "OriginalMetadata": {
+      "Stage": "joiner",
+      "CapturedUtc": "2026-10-13T02:41:09.905Z",
+      "Evidence": "access-joiner-70431d2d59814f809a20c47f34730f90.json",
+      "Description": "Actual guest display of six fresh ordinary-user results, 24 real resource operations; screenshot complements JSON."
+    },
+    "NativeImageUnedited": true,
+    "EvidenceSource": "access-joiner-70431d2d59814f809a20c47f34730f90.json"
+  },
+  {
+    "File": "mover-allowed-denied-20261013T025204Z.jpg",
+    "OriginalMetadata": {
+      "VM": "WS01",
+      "Stage": "mover",
+      "CapturedUtc": "2026-10-13T02:52:36.255Z",
+      "Evidence": "access-mover-0393f5d815fd403ea3bfc68786ccb090.json",
+      "Description": "Actual six-user matrix after mover role change; all checks pass."
+    },
+    "NativeImageUnedited": true,
+    "EvidenceSource": "access-mover-0393f5d815fd403ea3bfc68786ccb090.json"
+  },
+  {
+    "File": "seeded-excessive-access-20261013T025316Z.jpg",
+    "OriginalMetadata": {
+      "VM": "WS01",
+      "Stage": "seeded",
+      "CapturedUtc": "2026-10-13T02:53:59.073Z",
+      "Evidence": "access-seeded-170582d192d940cba5ab58ad39664e49.json",
+      "Description": "Deliberate excessive access causes normal-role checks to fail for sec2 and mover."
+    },
+    "NativeImageUnedited": true,
+    "EvidenceSource": "access-seeded-170582d192d940cba5ab58ad39664e49.json"
+  },
+  {
+    "File": "remediated-access-20261013T025435Z.jpg",
+    "OriginalMetadata": {
+      "VM": "WS01",
+      "Stage": "remediated",
+      "CapturedUtc": "2026-10-13T02:55:06.981Z",
+      "Evidence": "access-remediated-30056e255aa24a248ebc51b09e307054.json",
+      "Description": "Five enabled users pass all twenty ordinary-user resource checks after remediation."
+    },
+    "NativeImageUnedited": true,
+    "EvidenceSource": "access-remediated-30056e255aa24a248ebc51b09e307054.json"
+  },
+  {
+    "File": "final-ou-roles-and-disabled-users.jpg",
+    "OriginalMetadata": {
+      "VM": "DC01",
+      "Stage": "final-directory",
+      "CapturedUtc": "2026-10-13T03:05:24.485Z",
+      "Description": "Actual owned OU, four enabled role holders, two disabled users without roles, zero fixture matches in eight recursively inspected administrative groups."
+    },
+    "NativeImageUnedited": true,
+    "EvidenceSource": "directory-proof-1944ed36c38b491f8655b6c17f4c156b.json"
+  },
+  {
+    "File": "final-healthy-user-access.jpg",
+    "OriginalMetadata": {
+      "VM": "WS01",
+      "Stage": "final",
+      "CapturedUtc": "2026-10-13T03:06:12.118Z",
+      "Evidence": "access-final-15aabf948f0a4fd695bd814826ee6f0f.json",
+      "Description": "Final four enabled users pass sixteen operations after offboarding."
+    },
+    "NativeImageUnedited": true,
+    "EvidenceSource": "access-final-15aabf948f0a4fd695bd814826ee6f0f.json"
+  },
+  {
+    "File": "online-auth-after-retest.jpg",
+    "OriginalMetadata": {
+      "VM": "WS01",
+      "Stage": "online-auth-after-retest",
+      "CaptureUtc": "2026-10-13T03:14:41.919Z",
+      "Source": "online-auth-31539bff32044aa1b137945ac550e69d.json",
+      "VisibleAssertion": "Disabled ops2/leaver rejected; healthy sec1 allowed before and after; aggregate true"
+    },
+    "NativeImageUnedited": true,
+    "EvidenceSource": "online-auth-31539bff32044aa1b137945ac550e69d.json"
+  }
+]
