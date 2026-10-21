@@ -1,0 +1,309 @@
+﻿{
+    "RuntimeResourceTests":  "See separate workstation operations, not this controller success",
+    "RunId":  "96cb9aaf65ac4de698f7cf5af0e09ca8",
+    "After":  {
+                  "Users":  [
+                                {
+                                    "Name":  "iam.sec1",
+                                    "AdministrativeEntitlements":  0,
+                                    "ResolvedGroups":  [
+                                                           {
+                                                               "Name":  "Domain Users",
+                                                               "SID":  "S-1-5-21-1913346699-1088253351-1525948375-513"
+                                                           },
+                                                           {
+                                                               "Name":  "IAM-SecurityReader",
+                                                               "SID":  "S-1-5-21-1913346699-1088253351-1525948375-1106"
+                                                           }
+                                                       ],
+                                    "Enabled":  true,
+                                    "DirectGroups":  [
+                                                         "CN=IAM-SecurityReader,OU=IAM-Lifecycle-Lab,OU=Lab,DC=corp,DC=example,DC=test"
+                                                     ],
+                                    "SID":  "S-1-5-21-1913346699-1088253351-1525948375-1108"
+                                },
+                                {
+                                    "Name":  "iam.sec2",
+                                    "AdministrativeEntitlements":  0,
+                                    "ResolvedGroups":  [
+                                                           {
+                                                               "Name":  "Domain Users",
+                                                               "SID":  "S-1-5-21-1913346699-1088253351-1525948375-513"
+                                                           },
+                                                           {
+                                                               "Name":  "IAM-SecurityReader",
+                                                               "SID":  "S-1-5-21-1913346699-1088253351-1525948375-1106"
+                                                           }
+                                                       ],
+                                    "Enabled":  true,
+                                    "DirectGroups":  [
+                                                         "CN=IAM-SecurityReader,OU=IAM-Lifecycle-Lab,OU=Lab,DC=corp,DC=example,DC=test"
+                                                     ],
+                                    "SID":  "S-1-5-21-1913346699-1088253351-1525948375-1109"
+                                },
+                                {
+                                    "Name":  "iam.ops1",
+                                    "AdministrativeEntitlements":  0,
+                                    "ResolvedGroups":  [
+                                                           {
+                                                               "Name":  "Domain Users",
+                                                               "SID":  "S-1-5-21-1913346699-1088253351-1525948375-513"
+                                                           }
+                                                       ],
+                                    "Enabled":  true,
+                                    "DirectGroups":  [
+
+                                                     ],
+                                    "SID":  "S-1-5-21-1913346699-1088253351-1525948375-1110"
+                                },
+                                {
+                                    "Name":  "iam.ops2",
+                                    "AdministrativeEntitlements":  0,
+                                    "ResolvedGroups":  [
+                                                           {
+                                                               "Name":  "Domain Users",
+                                                               "SID":  "S-1-5-21-1913346699-1088253351-1525948375-513"
+                                                           }
+                                                       ],
+                                    "Enabled":  false,
+                                    "DirectGroups":  [
+
+                                                     ],
+                                    "SID":  "S-1-5-21-1913346699-1088253351-1525948375-1111"
+                                },
+                                {
+                                    "Name":  "iam.mover",
+                                    "AdministrativeEntitlements":  0,
+                                    "ResolvedGroups":  [
+                                                           {
+                                                               "Name":  "Domain Users",
+                                                               "SID":  "S-1-5-21-1913346699-1088253351-1525948375-513"
+                                                           },
+                                                           {
+                                                               "Name":  "IAM-SystemsOperator",
+                                                               "SID":  "S-1-5-21-1913346699-1088253351-1525948375-1107"
+                                                           }
+                                                       ],
+                                    "Enabled":  true,
+                                    "DirectGroups":  [
+                                                         "CN=IAM-SystemsOperator,OU=IAM-Lifecycle-Lab,OU=Lab,DC=corp,DC=example,DC=test"
+                                                     ],
+                                    "SID":  "S-1-5-21-1913346699-1088253351-1525948375-1112"
+                                },
+                                {
+                                    "Name":  "iam.leaver",
+                                    "AdministrativeEntitlements":  0,
+                                    "ResolvedGroups":  [
+                                                           {
+                                                               "Name":  "Domain Users",
+                                                               "SID":  "S-1-5-21-1913346699-1088253351-1525948375-513"
+                                                           },
+                                                           {
+                                                               "Name":  "IAM-SystemsOperator",
+                                                               "SID":  "S-1-5-21-1913346699-1088253351-1525948375-1107"
+                                                           }
+                                                       ],
+                                    "Enabled":  true,
+                                    "DirectGroups":  [
+                                                         "CN=IAM-SystemsOperator,OU=IAM-Lifecycle-Lab,OU=Lab,DC=corp,DC=example,DC=test"
+                                                     ],
+                                    "SID":  "S-1-5-21-1913346699-1088253351-1525948375-1113"
+                                }
+                            ],
+                  "Resources":  [
+                                    {
+                                        "Resource":  "Review",
+                                        "Sddl":  "O:BAG:DUD:PAI(A;OICI;FA;;;SY)(A;OICI;FA;;;BA)(A;OICI;0x1200a9;;;S-1-5-21-1913346699-1088253351-1525948375-1106)",
+                                        "ShareAccess":  [
+                                                            {
+                                                                "AccountName":  "CORP\\Domain Admins",
+                                                                "Type":  "Allow",
+                                                                "Right":  "Full"
+                                                            },
+                                                            {
+                                                                "AccountName":  "CORP\\IAM-SecurityReader",
+                                                                "Type":  "Allow",
+                                                                "Right":  "Read"
+                                                            }
+                                                        ]
+                                    },
+                                    {
+                                        "Resource":  "Ops",
+                                        "Sddl":  "O:BAG:DUD:PAI(A;OICI;FA;;;SY)(A;OICI;FA;;;BA)(A;OICI;0x1301bf;;;S-1-5-21-1913346699-1088253351-1525948375-1107)",
+                                        "ShareAccess":  [
+                                                            {
+                                                                "AccountName":  "CORP\\Domain Admins",
+                                                                "Type":  "Allow",
+                                                                "Right":  "Full"
+                                                            },
+                                                            {
+                                                                "AccountName":  "CORP\\IAM-SystemsOperator",
+                                                                "Type":  "Allow",
+                                                                "Right":  "Change"
+                                                            }
+                                                        ]
+                                    }
+                                ]
+              },
+    "Before":  {
+                   "Users":  [
+                                 {
+                                     "Name":  "iam.sec1",
+                                     "AdministrativeEntitlements":  0,
+                                     "ResolvedGroups":  [
+                                                            {
+                                                                "Name":  "Domain Users",
+                                                                "SID":  "S-1-5-21-1913346699-1088253351-1525948375-513"
+                                                            },
+                                                            {
+                                                                "Name":  "IAM-SecurityReader",
+                                                                "SID":  "S-1-5-21-1913346699-1088253351-1525948375-1106"
+                                                            }
+                                                        ],
+                                     "Enabled":  true,
+                                     "DirectGroups":  [
+                                                          "CN=IAM-SecurityReader,OU=IAM-Lifecycle-Lab,OU=Lab,DC=corp,DC=example,DC=test"
+                                                      ],
+                                     "SID":  "S-1-5-21-1913346699-1088253351-1525948375-1108"
+                                 },
+                                 {
+                                     "Name":  "iam.sec2",
+                                     "AdministrativeEntitlements":  0,
+                                     "ResolvedGroups":  [
+                                                            {
+                                                                "Name":  "Domain Users",
+                                                                "SID":  "S-1-5-21-1913346699-1088253351-1525948375-513"
+                                                            },
+                                                            {
+                                                                "Name":  "IAM-SecurityReader",
+                                                                "SID":  "S-1-5-21-1913346699-1088253351-1525948375-1106"
+                                                            }
+                                                        ],
+                                     "Enabled":  true,
+                                     "DirectGroups":  [
+                                                          "CN=IAM-SecurityReader,OU=IAM-Lifecycle-Lab,OU=Lab,DC=corp,DC=example,DC=test"
+                                                      ],
+                                     "SID":  "S-1-5-21-1913346699-1088253351-1525948375-1109"
+                                 },
+                                 {
+                                     "Name":  "iam.ops1",
+                                     "AdministrativeEntitlements":  0,
+                                     "ResolvedGroups":  [
+                                                            {
+                                                                "Name":  "Domain Users",
+                                                                "SID":  "S-1-5-21-1913346699-1088253351-1525948375-513"
+                                                            },
+                                                            {
+                                                                "Name":  "IAM-SystemsOperator",
+                                                                "SID":  "S-1-5-21-1913346699-1088253351-1525948375-1107"
+                                                            }
+                                                        ],
+                                     "Enabled":  true,
+                                     "DirectGroups":  [
+                                                          "CN=IAM-SystemsOperator,OU=IAM-Lifecycle-Lab,OU=Lab,DC=corp,DC=example,DC=test"
+                                                      ],
+                                     "SID":  "S-1-5-21-1913346699-1088253351-1525948375-1110"
+                                 },
+                                 {
+                                     "Name":  "iam.ops2",
+                                     "AdministrativeEntitlements":  0,
+                                     "ResolvedGroups":  [
+                                                            {
+                                                                "Name":  "Domain Users",
+                                                                "SID":  "S-1-5-21-1913346699-1088253351-1525948375-513"
+                                                            }
+                                                        ],
+                                     "Enabled":  false,
+                                     "DirectGroups":  [
+
+                                                      ],
+                                     "SID":  "S-1-5-21-1913346699-1088253351-1525948375-1111"
+                                 },
+                                 {
+                                     "Name":  "iam.mover",
+                                     "AdministrativeEntitlements":  0,
+                                     "ResolvedGroups":  [
+                                                            {
+                                                                "Name":  "Domain Users",
+                                                                "SID":  "S-1-5-21-1913346699-1088253351-1525948375-513"
+                                                            },
+                                                            {
+                                                                "Name":  "IAM-SystemsOperator",
+                                                                "SID":  "S-1-5-21-1913346699-1088253351-1525948375-1107"
+                                                            }
+                                                        ],
+                                     "Enabled":  true,
+                                     "DirectGroups":  [
+                                                          "CN=IAM-SystemsOperator,OU=IAM-Lifecycle-Lab,OU=Lab,DC=corp,DC=example,DC=test"
+                                                      ],
+                                     "SID":  "S-1-5-21-1913346699-1088253351-1525948375-1112"
+                                 },
+                                 {
+                                     "Name":  "iam.leaver",
+                                     "AdministrativeEntitlements":  0,
+                                     "ResolvedGroups":  [
+                                                            {
+                                                                "Name":  "Domain Users",
+                                                                "SID":  "S-1-5-21-1913346699-1088253351-1525948375-513"
+                                                            },
+                                                            {
+                                                                "Name":  "IAM-SystemsOperator",
+                                                                "SID":  "S-1-5-21-1913346699-1088253351-1525948375-1107"
+                                                            }
+                                                        ],
+                                     "Enabled":  true,
+                                     "DirectGroups":  [
+                                                          "CN=IAM-SystemsOperator,OU=IAM-Lifecycle-Lab,OU=Lab,DC=corp,DC=example,DC=test"
+                                                      ],
+                                     "SID":  "S-1-5-21-1913346699-1088253351-1525948375-1113"
+                                 }
+                             ],
+                   "Resources":  [
+                                     {
+                                         "Resource":  "Review",
+                                         "Sddl":  "O:BAG:DUD:PAI(A;OICI;FA;;;SY)(A;OICI;FA;;;BA)(A;OICI;0x1200a9;;;S-1-5-21-1913346699-1088253351-1525948375-1106)",
+                                         "ShareAccess":  [
+                                                             {
+                                                                 "AccountName":  "CORP\\Domain Admins",
+                                                                 "Type":  "Allow",
+                                                                 "Right":  "Full"
+                                                             },
+                                                             {
+                                                                 "AccountName":  "CORP\\IAM-SecurityReader",
+                                                                 "Type":  "Allow",
+                                                                 "Right":  "Read"
+                                                             }
+                                                         ]
+                                     },
+                                     {
+                                         "Resource":  "Ops",
+                                         "Sddl":  "O:BAG:DUD:PAI(A;OICI;FA;;;SY)(A;OICI;FA;;;BA)(A;OICI;0x1301bf;;;S-1-5-21-1913346699-1088253351-1525948375-1107)",
+                                         "ShareAccess":  [
+                                                             {
+                                                                 "AccountName":  "CORP\\Domain Admins",
+                                                                 "Type":  "Allow",
+                                                                 "Right":  "Full"
+                                                             },
+                                                             {
+                                                                 "AccountName":  "CORP\\IAM-SystemsOperator",
+                                                                 "Type":  "Allow",
+                                                                 "Right":  "Change"
+                                                             }
+                                                         ]
+                                     }
+                                 ]
+               },
+    "Phase":  "Mistake",
+    "Entry":  {
+                  "Phase":  "Mistake",
+                  "Status":  "Succeeded",
+                  "StartedUtc":  "2026-10-13T02:55:26.5240105Z",
+                  "CompletedUtc":  "2026-10-13T02:55:26.6052957Z",
+                  "Details":  {
+                                  "RecoveryTargetSeconds":  300,
+                                  "Inverse":  "Re-add only IAM-SystemsOperator",
+                                  "User":  "iam.ops1"
+                              },
+                  "Failure":  null
+              }
+}

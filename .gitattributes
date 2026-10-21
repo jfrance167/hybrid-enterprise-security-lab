@@ -1,0 +1,2 @@
+# Preserve the original report/screenshot bytes and their manifest hashes.
+labs/iam-lifecycle/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

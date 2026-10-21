@@ -1,0 +1,15 @@
+﻿{
+    "RunId":  "96cb9aaf65ac4de698f7cf5af0e09ca8",
+    "Identity":  "CORP\\iam.leaver",
+    "AdministrativeToken":  false,
+    "StartedUtc":  "2026-10-13T02:56:32.0369874Z",
+    "ReadyUtc":  "2026-10-13T02:56:32.3728935Z",
+    "StreamFailedUtc":  "2026-10-13T02:56:46.7522772Z",
+    "StreamErrorCode":  -2147024894,
+    "FreshReadResult":  "NOT RUN",
+    "FreshReadUtc":  null,
+    "FreshReadErrorCode":  null,
+    "CompletedUtc":  "2026-10-13T02:56:46.7648575Z",
+    "Failure":  "Exception calling \"Dispose\" with \"0\" argument(s): \"An unexpected network error occurred.\r\n\"",
+    "Scope":  "Targeted SMB resource/session only; global Kerberos revocation not asserted"
+}

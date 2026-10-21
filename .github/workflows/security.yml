@@ -24,13 +24,20 @@ jobs:
         run: |
           $errors = $null
           $tokens = $null
-          [System.Management.Automation.Language.Parser]::ParseFile(
-            (Resolve-Path 'scripts/New-LabVMs.ps1').Path,
-            [ref]$tokens, [ref]$errors) | Out-Null
-          if ($errors.Count) { $errors | Format-Table; exit 1 }
+          $sources = @(Get-ChildItem scripts,labs -Filter '*.ps1' -Recurse)
+          foreach ($source in $sources) {
+            [System.Management.Automation.Language.Parser]::ParseFile(
+              $source.FullName, [ref]$tokens, [ref]$errors) | Out-Null
+            if ($errors.Count) { $errors | Format-Table; exit 1 }
+          }
           Install-Module PSScriptAnalyzer -RequiredVersion 1.25.0 -Scope CurrentUser -Force
-          $issues = Invoke-ScriptAnalyzer -Path 'scripts/New-LabVMs.ps1' -Severity Error
+          $issues = @($sources | ForEach-Object {
+            Invoke-ScriptAnalyzer -Path $_.FullName -Severity Error
+          })
           if ($issues) { $issues | Format-Table; exit 1 }
+      - name: Verify IAM observations and corrupted-evidence rejection
+        shell: pwsh
+        run: ./labs/iam-lifecycle/Test-EvidenceVerifier.ps1
 
   php:
     runs-on: ubuntu-latest
