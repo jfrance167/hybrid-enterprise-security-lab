@@ -97,12 +97,21 @@ foreach($subject in $auth.Subjects){
 $directory=Read-Evidence 'directory'
 Assert ((Is-True $directory.Passed) -and $directory.PrivilegedGroupSids.Count -eq 8 -and @($directory.RecursiveAdminMatches).Count -eq 0) 'Recursive administrative check incomplete'
 Same-Names @('iam.sec1','iam.sec2','iam.ops1','iam.ops2','iam.mover','iam.leaver') @($phases.OffboardRetest.After.Users.Name)
+Same-Names @($phases.OffboardRetest.After.Users.Name) @($directory.Users.User)
+$domainSid=$phases.OffboardRetest.After.Users[0].SID -replace '-\d+$',''
+Assert ($domainSid -match '^S-1-5-21-\d+-\d+-\d+$') 'Invalid domain SID'
+$expectedAdminSids=@('S-1-5-32-544','S-1-5-32-548','S-1-5-32-549','S-1-5-32-550','S-1-5-32-551',"$domainSid-512","$domainSid-518","$domainSid-519")
+Same-Names $expectedAdminSids @($directory.PrivilegedGroupSids)
 foreach($user in $phases.OffboardRetest.After.Users){
  $enabled=($user.Name -notin @('iam.ops2','iam.leaver'))
  Assert ($user.Enabled -is [bool] -and $user.Enabled -eq $enabled -and $user.AdministrativeEntitlements -eq 0) 'Final enabled/admin state incorrect'
  $role=if($user.Name -in @('iam.sec1','iam.sec2')){'IAM-SecurityReader'}else{'IAM-SystemsOperator'}
  $expectedGroups=if($enabled){@('CN='+$role+',OU=IAM-Lifecycle-Lab,OU=Lab,DC=corp,DC=example,DC=test')}else{@()}
  Same-Names $expectedGroups @($user.DirectGroups)
+ $proof=@($directory.Users | Where-Object User -CEQ $user.Name)
+ $expectedRole=if($enabled){$role}else{''}
+ Assert ($proof.Count -eq 1 -and (Is-False $proof[0].Admin) -and $proof[0].Enabled -is [bool] -and $proof[0].Enabled -eq $enabled -and $proof[0].Roles -ceq $expectedRole) 'Directory proof contradicts final state'
+ Assert (($user.SID -replace '-\d+$','') -ceq $domainSid) 'Inconsistent domain SID'
 }
 Assert (Is-True (Read-Evidence 'provisionCleanup').Passed) 'Provisioning cleanup missing'
 [pscustomobject]@{Passed=$true;ActualAccessRecoverySeconds=$recovery;HeldStreamRevocationSeconds=$held;FreshReadDenialSeconds=$fresh;HealthyFinalOperations=16;Scope='Recorded synthetic VM evidence; no live changes; hashes do not establish provenance'}

@@ -8,6 +8,10 @@ $baseline=Join-Path $PSScriptRoot 'evidence'
 $temp=Join-Path ([IO.Path]::GetTempPath()) ('northstar-verifier-'+[Guid]::NewGuid().ToString('N'))
 $null=New-Item -Path $temp -ItemType Directory
 $cases=@(
+ @{Name='Duplicate admin groups accepted';Key='directory';Change={param($r)$r.PrivilegedGroupSids=@($r.PrivilegedGroupSids[0])*8}},
+ @{Name='Directory admin status ignored';Key='directory';Change={param($r)$r.Users[0].Admin=$true}},
+ @{Name='Directory enabled state ignored';Key='directory';Change={param($r)($r.Users | Where-Object User -eq 'iam.leaver').Enabled=$true}},
+ @{Name='Directory subject omitted';Key='directory';Change={param($r)$r.Users=@($r.Users | Select-Object -First 5)}},
  @{Name='Missing operation';Key='final';Change={param($r)$r.Subjects[0].Operations=@($r.Subjects[0].Operations | Select-Object -First 3)}},
  @{Name='Wrong role accepted';Key='mover';Change={param($r)$r.Subjects[0].Role='SystemsOperator'}},
  @{Name='Admin process accepted';Key='joiner';Change={param($r)$r.Subjects[0].AdministrativeToken=$true}},
